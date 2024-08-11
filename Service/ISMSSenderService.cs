@@ -1,4 +1,4 @@
-﻿namespace FootBallShop2.Service
+﻿namespace FootBallShop.Service
 {
     public interface ISMSSenderService
     {

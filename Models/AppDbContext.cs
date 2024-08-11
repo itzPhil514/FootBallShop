@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using FootBallShop2.Models;
+using FootBallShop.Models;
 
 namespace FootBallShop.Models
 {

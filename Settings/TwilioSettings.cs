@@ -1,4 +1,4 @@
-﻿namespace FootBallShop2.Settings
+﻿namespace FootBallShop.Settings
 {
     public class TwilioSettings
     {

@@ -1,4 +1,4 @@
-﻿@model FootBallShop2.Models.Leagues
+﻿@model FootBallShop.Models.Leagues
 
 @{
     ViewData["Title"] = "Create";
@@ -8,27 +8,6 @@
 
 <h4>Leagues</h4>
 <hr />
-
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
-
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["ErrorMessage"]
-    </div>
-}
-
-@if (TempData["WarningMessage"] != null)
-{
-    <div class="alert alert-warning">
-        @TempData["WarningMessage"]
-    </div>
-}
 
 <div class="row">
     <div class="col-md-4">
@@ -40,9 +19,9 @@
                 <span asp-validation-for="LeagueName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="imgLeague" class="control-label"></label>
-                <input type="file" asp-for="imgLeague" class="form-control" />
-                <span asp-validation-for="imgLeague" class="text-danger"></span>
+                <label asp-for="imgLeaguePath" class="control-label"></label>
+                <input type="file" asp-for="imgLeaguePath" class="form-control" />
+                <span asp-validation-for="imgLeaguePath" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

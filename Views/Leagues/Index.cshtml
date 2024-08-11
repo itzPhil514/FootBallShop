@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FootBallShop2.Models.Leagues>
+﻿@model IEnumerable<FootBallShop.Models.Leagues>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,26 +16,34 @@
                 @Html.DisplayNameFor(model => model.LeagueName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.imgLeaguePath)
+                Image
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.LeagueName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.imgLeaguePath)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.LeagueId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.LeagueId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.LeagueId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LeagueName)
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.imgLeaguePath))
+                    {
+                        <img src="@Url.Content($"~/img/leagues/{item.imgLeaguePath}")" alt="League Image" style="max-width: 100px; max-height: 100px;" />
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.LeagueId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.LeagueId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.LeagueId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

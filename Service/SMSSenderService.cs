@@ -1,10 +1,10 @@
-﻿using FootBallShop2.Settings;
+﻿using FootBallShop.Settings;
 using Microsoft.Extensions.Options;
 using System.Net;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 
-namespace FootBallShop2.Service
+namespace FootBallShop.Service
 {
     public class SMSSenderService : ISMSSenderService
     {

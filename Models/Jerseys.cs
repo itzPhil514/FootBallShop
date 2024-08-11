@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Twilio.TwiML.Voice;
 
-namespace FootBallShop2.Models
+namespace FootBallShop.Models
 {
     public class Jerseys
     {

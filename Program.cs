@@ -1,8 +1,8 @@
-using FootBallShop2.Models;
+using FootBallShop.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using FootBallShop2.Service;
-using FootBallShop2.Settings;
+using FootBallShop.Service;
+using FootBallShop.Settings;
 using FootBallShop.Models;
 
 var builder = WebApplication.CreateBuilder(args);

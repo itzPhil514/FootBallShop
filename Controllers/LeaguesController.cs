@@ -1,25 +1,19 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting; // Add this using directive for IWebHostEnvironment
-using Microsoft.AspNetCore.Http; // Add this using directive for IFormFile
+﻿using FootBallShop.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FootBallShop.Models;
-using FootBallShop2.Models;
+using System.Net.Http.Headers;
 
 namespace FootBallShop.Controllers
 {
     public class LeaguesController : Controller
     {
         private readonly AppDbContext _context;
-        private readonly IWebHostEnvironment _hostingEnvironment; // Add this field
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public LeaguesController(AppDbContext context, IWebHostEnvironment hostingEnvironment)
+        public LeaguesController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
-            _hostingEnvironment = hostingEnvironment;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Leagues
@@ -47,6 +41,7 @@ namespace FootBallShop.Controllers
         }
 
         // GET: Leagues/Create
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -54,56 +49,39 @@ namespace FootBallShop.Controllers
 
         // POST: Leagues/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Leagues league)
         {
-            if (ModelState.IsValid)
+            if (HttpContext.Request.Form.Files.Count > 0)
             {
-                try
+                var file = HttpContext.Request.Form.Files[0];
+
+                if (file.Length > 0)
                 {
-                    Console.WriteLine("Model is valid.");
-                    if (league.imgLeague != null && league.imgLeague.Length > 0)
+                    var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fileExtension = Path.GetExtension(originalFileName);
+                    var uniqueFileName = originalFileName;
+
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img/leagues");
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    if (!Directory.Exists(uploadsFolder))
                     {
-                        Console.WriteLine("Image is present.");
-                        var fileName = Path.GetFileName(league.imgLeague.FileName);
-                        var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "img", fileName);
-
-                        // Create directory if it does not exist
-                        var directoryPath = Path.GetDirectoryName(filePath);
-                        if (!Directory.Exists(directoryPath))
-                        {
-                            Directory.CreateDirectory(directoryPath);
-                        }
-
-                        // Save the file
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await league.imgLeague.CopyToAsync(stream);
-                        }
-
-                        // Store the file path in the database
-                        league.imgLeaguePath = fileName;
-
-                        TempData["SuccessMessage"] = "Image uploaded successfully.";
-                    }
-                    else
-                    {
-                        TempData["WarningMessage"] = "No image uploaded.";
+                        Directory.CreateDirectory(uploadsFolder);
                     }
 
-                    _context.Add(league);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    TempData["ErrorMessage"] = $"An error occurred: {ex.Message}";
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+
+                    league.imgLeaguePath = uniqueFileName; 
                 }
             }
+            _context.League.Add(league);
+            await _context.SaveChangesAsync();
 
-            return View(league);
+            return RedirectToAction("Index");
         }
-
 
 
         // GET: Leagues/Edit/5
@@ -123,60 +101,7 @@ namespace FootBallShop.Controllers
         }
 
         // POST: Leagues/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Leagues league)
-        {
-            if (id != league.LeagueId)
-            {
-                return NotFound();
-            }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    // Handle file upload if a new file is provided
-                    if (league.imgLeague != null && league.imgLeague.Length > 0)
-                    {
-                        var fileName = Path.GetFileName(league.imgLeague.FileName);
-                        var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "img/Leagues", fileName);
-
-                        // Create directory if it does not exist
-                        var directoryPath = Path.GetDirectoryName(filePath);
-                        if (!Directory.Exists(directoryPath))
-                        {
-                            Directory.CreateDirectory(directoryPath);
-                        }
-
-                        // Save the file
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await league.imgLeague.CopyToAsync(stream);
-                        }
-
-                        // Update the file path
-                        league.imgLeaguePath = fileName;
-                    }
-
-                    _context.Update(league);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LeaguesExists(league.LeagueId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(league);
-        }
 
         // GET: Leagues/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -206,13 +131,26 @@ namespace FootBallShop.Controllers
             {
                 _context.League.Remove(league);
                 await _context.SaveChangesAsync();
+
+                // Reorder the LeagueIds
+                var leagues = await _context.League.OrderBy(l => l.LeagueId).ToListAsync();
+
+                int newId = 1;
+                foreach (var item in leagues)
+                {
+                    if (item.LeagueId != newId)
+                    {
+                        item.LeagueId = newId;
+                    }
+                    newId++;
+                }
+
+                // Update the database with the reordered IDs
+                await _context.SaveChangesAsync();
             }
+
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LeaguesExists(int id)
-        {
-            return _context.League.Any(e => e.LeagueId == id);
-        }
     }
 }

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FootBallShop.Models;
-using FootBallShop2.Models;
 
 namespace FootBallShop.Controllers
 {

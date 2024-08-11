@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Twilio.TwiML.Voice;
-using FootBallShop2.Models;
+using FootBallShop.Models;
 
 namespace FootBallShop.Models
 {
