@@ -83,6 +83,26 @@ namespace FootBallShop.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Leagues/Clubs/5
+        public async Task<IActionResult> Clubs(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var league = await _context.League
+                .Include(l => l.Clubs)
+                .FirstOrDefaultAsync(m => m.LeagueId == id);
+
+            if (league == null)
+            {
+                return NotFound();
+            }
+
+            return View(league);
+        }
+
 
         // GET: Leagues/Edit/5
         public async Task<IActionResult> Edit(int? id)

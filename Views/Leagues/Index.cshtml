@@ -1,49 +1,36 @@
 ﻿@model IEnumerable<FootBallShop.Models.Leagues>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Leagues";
+    Layout = "_Layout";
 }
 
-<h1>Index</h1>
+<div class="container my-4">
+    <h2 class="text-center mb-4">Leagues</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var league in Model)
+        {
+            <div class="col mb-3">
+                <a href="@Url.Action("Clubs", "Leagues", new { id = league.LeagueId })" class="league-card-link">
+                    <div class="card league-card">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                            @if (!string.IsNullOrEmpty(league.imgLeaguePath))
+                            {
+                                <img src="@Url.Content($"~/img/leagues/{league.imgLeaguePath}")" class="league-img mb-2" alt="@league.LeagueName">
+                            }
+                            else
+                            {
+                                <img src="~/img/default-placeholder.png" class="league-img mb-2" alt="No Image">
+                            }
+                            <h5 class="card-title text-center">@league.LeagueName</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New League</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.LeagueName)
-            </th>
-            <th>
-                Image
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LeagueName)
-                </td>
-                <td>
-                    @if (!string.IsNullOrEmpty(item.imgLeaguePath))
-                    {
-                        <img src="@Url.Content($"~/img/leagues/{item.imgLeaguePath}")" alt="League Image" style="max-width: 100px; max-height: 100px;" />
-                    }
-                    else
-                    {
-                        <span>No Image</span>
-                    }
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.LeagueId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.LeagueId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.LeagueId">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>

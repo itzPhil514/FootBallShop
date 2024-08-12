@@ -20,7 +20,6 @@ namespace FootBallShop.Models
         [ForeignKey("LeagueId")]
         public virtual Leagues League { get; set; }
 
-        [Url(ErrorMessage = "Invalid URL format.")]
         public string img { get; set; }
 
         public virtual ICollection<Jerseys> Jersey { get; set; }
