@@ -1,0 +1,75 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Log In";
+}
+
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-xl-10">
+            <div class="card rounded-3 text-black">
+                <div class="row g-0">
+                    <div class="col-lg-6">
+                        <div class="card-body p-md-5 mx-md-4">
+
+                            <div class="text-center">
+                                <img src="~/img/logo1.png" style="width: 185px;" alt="logo">
+                                <h4 class="mt-1 mb-5 pb-1">FootBall Shop</h4>
+                            </div>
+
+                            <form id="account" method="post">
+                                <p>Please login to your account</p>
+
+                                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Input.Email" class="form-control" placeholder="Email address" />
+                                    <label asp-for="Input.Email">Email</label>
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Input.Password" class="form-control" placeholder="Password" />
+                                    <label asp-for="Input.Password">Password</label>
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                </div>
+
+                                <div class="checkbox mb-3">
+                                    <label asp-for="Input.RememberMe" class="form-label">
+                                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                    </label>
+                                </div>
+
+                                <div class="text-center pt-1 mb-4">
+                                    <button type="submit" class="btn btn-primary btn-block gradient-custom-2 mb-3">Log in</button>
+                                    <a class="btn btn-link text-muted" href="#!">Forgot password?</a>
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-center pb-4">
+                                    <p class="mb-0 me-2">Don't have an account?</p>
+                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Create new</a>
+                                </div>
+
+                                <p>
+                                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                                </p>
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                        <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                            <h4 class="mb-4">Join Your Favorite Team by Wearing Their Jerseys</h4>
+                            <p class="small mb-0">At FootBall Shop, we're more than just a company - we're passionate about football and making you feel a part of your favorite team. Discover our wide range of high-quality football jerseys and gear, designed to bring you closer to the game you love. Whether you're cheering from the stands or playing on the field, our products are crafted to inspire your football journey. Join us in celebrating the spirit of football and your favorite team with every jersey and every purchase.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
