@@ -28,7 +28,7 @@ namespace FootBallShop.Models
             modelBuilder.Entity<Jerseys>()
                 .HasOne(j => j.Club)
                 .WithMany(c => c.Jersey)
-                .HasForeignKey(j => j.TeamId)
+                .HasForeignKey(j => j.ClubId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
 

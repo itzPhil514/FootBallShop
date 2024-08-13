@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using FootBallShop.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using FootBallShop.Models;
+using System.Net.Http.Headers;
 
 namespace FootBallShop.Controllers
 {
     public class JerseysController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public JerseysController(AppDbContext context)
+        public JerseysController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Jerseys
@@ -48,7 +47,7 @@ namespace FootBallShop.Controllers
         // GET: Jerseys/Create
         public IActionResult Create()
         {
-            ViewData["TeamId"] = new SelectList(_context.Club, "ClubId", "Name");
+            ViewData["ClubId"] = new SelectList(_context.Club, "ClubId", "Name");
             ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName");
             return View();
         }
@@ -58,18 +57,53 @@ namespace FootBallShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("JerseysId,Name,Size,Price,LeagueId,TeamId,img")] Jerseys jerseys)
+        public async Task<IActionResult> Create(Jerseys jerseys)
         {
-            if (ModelState.IsValid)
+            if (HttpContext.Request.Form.Files.Count > 0)
             {
-                _context.Add(jerseys);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var file = HttpContext.Request.Form.Files[0];
+
+                if (file.Length > 0)
+                {
+                    var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fileExtension = Path.GetExtension(originalFileName);
+                    var uniqueFileName = originalFileName;
+
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img/jerseys");
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+
+                    jerseys.img = uniqueFileName; // Assign the unique filename to the img property
+                }
             }
-            ViewData["TeamId"] = new SelectList(_context.Club, "ClubId", "Name", jerseys.TeamId);
-            ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName", jerseys.LeagueId);
-            return View(jerseys);
+
+            _context.Jersey.Add(jerseys);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
+
+        // GET: Jerseys/GetTeamsByLeague
+        public IActionResult GetTeamsByLeague(int leagueId)
+        {
+            var teams = _context.Club
+                .Where(t => t.LeagueId == leagueId)
+                .Select(t => new { teamId = t.ClubId, teamName = t.Name })
+                .ToList();
+
+            return Json(teams);
+        }
+
+
 
         // GET: Jerseys/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -84,7 +118,7 @@ namespace FootBallShop.Controllers
             {
                 return NotFound();
             }
-            ViewData["TeamId"] = new SelectList(_context.Club, "ClubId", "Name", jerseys.TeamId);
+            ViewData["ClubId"] = new SelectList(_context.Club, "ClubId", "Name", jerseys.ClubId);
             ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName", jerseys.LeagueId);
             return View(jerseys);
         }
@@ -121,7 +155,7 @@ namespace FootBallShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TeamId"] = new SelectList(_context.Club, "ClubId", "Name", jerseys.TeamId);
+            ViewData["ClubId"] = new SelectList(_context.Club, "ClubId", "Name", jerseys.ClubId);
             ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName", jerseys.LeagueId);
             return View(jerseys);
         }

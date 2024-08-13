@@ -1,4 +1,16 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+﻿$(document).ready(function () {
+    $('#leagueSelect').change(function () {
+        var leagueId = $(this).val();
+        $.ajax({
+            url: '/Jerseys/GetTeamsByLeague',
+            type: 'GET',
+            data: { leagueId: leagueId },
+            success: function (data) {
+                $('#teamSelect').empty().append('<option value="">Select a Club</option>');
+                $.each(data, function (index, team) {
+                    $('#teamSelect').append('<option value="' + team.teamId + '">' + team.teamName + '</option>');
+                });
+            }
+        });
+    });
+});

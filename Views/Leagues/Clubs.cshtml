@@ -14,7 +14,7 @@
         @foreach (var club in Model.Clubs)
         {
             <div class="col mb-3">
-                <a href="@Url.Action("Details", "Clubs", new { id = club.ClubId })" class="card-link">
+                <a href="@Url.Action("Jersey", "Clubs", new { id = club.ClubId })" class="card-link">
                     <div class="card club-card">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
                             @if (!string.IsNullOrEmpty(club.img))
@@ -35,6 +35,6 @@
 
     <p>
         <a asp-action="Create" asp-controller="Clubs" class="btn btn-primary">Add Club</a>
-        <a asp-action="Index" class="btn btn-secondary">Back to Leagues</a>
+        <a asp-action="Index" asp-controller="Leagues" class="btn btn-secondary">Back to Leagues</a>
     </p>
 </div>

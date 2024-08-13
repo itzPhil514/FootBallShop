@@ -84,7 +84,7 @@ namespace FootBallShop.Controllers
                         await file.CopyToAsync(fileStream);
                     }
 
-                    clubs.img = uniqueFileName; // Assign the unique filename to the img property
+                    clubs.img = uniqueFileName; 
                 }
             }
 
@@ -94,6 +94,19 @@ namespace FootBallShop.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Jersey(int id)
+        {
+            var club = await _context.Club
+                .Include(c => c.Jersey)
+                .FirstOrDefaultAsync(c => c.ClubId == id);
+
+            if (club == null)
+            {
+                return NotFound();
+            }
+
+            return View(club);
+        }
 
 
         // GET: Clubs/Edit/5

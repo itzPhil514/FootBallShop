@@ -8,6 +8,7 @@ namespace FootBallShop.Models
     public class Clubs
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ClubId { get; set; }
 
         [Required(ErrorMessage = "Club name is required.")]

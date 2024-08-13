@@ -25,9 +25,9 @@ namespace FootBallShop.Models
         [ForeignKey("LeagueId")]
         public virtual Leagues League { get; set; }
 
-        public int TeamId { get; set; }
+        public int ClubId { get; set; }
 
-        [ForeignKey("TeamId")]
+        [ForeignKey("ClubId")]
         public virtual Clubs Club { get; set; }
 
         public string img { get; set; }
