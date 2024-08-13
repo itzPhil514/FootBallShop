@@ -14,3 +14,27 @@
         });
     });
 });
+$(document).ready(function () {
+    function updateCartQuantity() {
+        $.getJSON('/Cart/TotalQuantity', function (data) {
+            if (data > 0) {
+                $('#cart-quantity').text(data).show();
+            } else {
+                $('#cart-quantity').hide();
+            }
+        });
+    }
+    updateCartQuantity();
+});
+$(document).ready(function () {
+    function updateWishlistQuantity() {
+        $.getJSON('/Wishlist/TotalItems', function (data) {
+            if (data > 0) {
+                $('#wishlist-quantity').text(data).show();
+            } else {
+                $('#wishlist-quantity').hide();
+            }
+        });
+    }
+    updateWishlistQuantity();
+});

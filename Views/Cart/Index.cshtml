@@ -1,0 +1,75 @@
+﻿@model List<FootBallShop.Models.Cart>
+
+@{
+    ViewData["Title"] = "Your Cart";
+}
+
+<h2>Your Cart</h2>
+
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.jersey != null)
+                    {
+                        <img src="@Url.Content($"~/img/jerseys/{item.jersey.img}")" alt="Tshirt Image" style="width: 100px; height: auto;">
+                    }
+                </td>
+                <td>@item.jersey.Name</td>
+                <td>@item.Size</td>
+                <td>$@item.jersey.Price</td>
+                <td>
+                    <form asp-action="UpdateQuantity" method="post" style="display:inline;">
+                        <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
+                        <input type="hidden" name="Size" value="@item.Size" />
+                        <input type="number" name="Quantity" value="@item.Quantity" min="1" class="form-control d-inline-block" style="width: 60px;">
+                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                    </form>
+                </td>
+                <td>$@(item.jersey.Price * item.Quantity)</td>
+                <td>
+                    <form asp-action="RemoveFromCart" method="post" style="display:inline;">
+                        <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
+                        <input type="hidden" name="Size" value="@item.Size" />
+                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    </form>
+                    <form asp-action="AddToWishlist" method="post" asp-controller="Wishlist" style="display:inline;">
+                        <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
+                        <input type="hidden" name="Size" value="@item.Size" />
+                        <button type="submit" class="btn btn-secondary btn-sm">
+                            <img src="~/img/heart-15.png" alt="Wishlist" style="width: 20px; height: 20px;" />
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.Any())
+{
+    var totalPrice = Model.Sum(item => (item.jersey?.Price ?? 0) * item.Quantity);
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <h4>Total Price: $@totalPrice</h4>
+        <form asp-action="Checkout" method="post">
+            <button type="submit" class="btn btn-primary btn-block gradient-custom-2 mb-3">Proceed to Checkout</button>
+        </form>
+    </div>
+}
+else
+{
+    <p>Your cart is empty.</p>
+}

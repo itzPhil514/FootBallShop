@@ -1,0 +1,41 @@
+﻿@model List<FootBallShop.Models.Wishlist>
+
+@{
+    ViewData["Title"] = "Your Wishlist";
+}
+
+<h2>Your Wishlist</h2>
+
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Jerseys" asp-action="Details" asp-route-id="@item.jerseys.JerseysId">
+                        <img src="@Url.Content($"~/img/jerseys/{item.jerseys.img}")" alt="Tshirt Image" style="width: 100px; height: auto;">
+                    </a>
+                </td>
+                <td>@item.jerseys.Name</td>
+                <td>
+                    <form asp-action="RemoveFromWishlist" method="post" style="display:inline;">
+                        <input type="hidden" name="TshirtId" value="@item.jerseys.JerseysId" />
+                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <p>Your wishlist is empty.</p>
+}
