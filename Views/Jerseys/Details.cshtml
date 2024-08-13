@@ -2,53 +2,47 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "_Layout";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Jerseys</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Size)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Size)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.League)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.League.LeagueName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Club)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Club.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.img)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.img)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.JerseysId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="container my-4">
+    <div class="card detail-card">
+        <div class="row g-0">
+            <div class="col-md-6">
+                <img src="@Url.Content($"~/img/jerseys/{Model.img}")" class="img-fluid rounded-start detail-img" alt="@Model.Name">
+            </div>
+            <div class="col-md-6">
+                <div class="card-body detail-card-body">
+                    <h4 class="detail-card-title">@Model.Name</h4>
+                    <p class="detail-card-text"><strong>Price:</strong> $@Model.Price</p>
+                    <form asp-action="AddToCart" method="post" asp-controller="Cart">
+                        <input type="hidden" name="TshirtId" value="@Model.JerseysId" />
+                        <div class="form-group detail-form-group">
+                            <label for="size">Size:</label>
+                            <select name="size" class="form-control detail-form-control" id="size">
+                                <option value="XS">XS</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="XXL">XXL</option>
+                            </select>
+                        </div>
+                        <div class="form-group detail-form-group mt-2">
+                            <label for="quantity">Quantity:</label>
+                            <input type="number" name="quantity" class="form-control detail-form-control" id="quantity" value="1" min="1" />
+                        </div>
+                        <button type="submit" class="btn btn-primary detail-btn mt-3">Add to Cart</button>
+                    </form>
+                    <form asp-action="AddToWishlist" method="post" asp-controller="Wishlist" class="w-50 ms-2 d-flex align-items-center">
+                        <input type="hidden" name="TshirtId" value="@Model.JerseysId" />
+                        <input type="hidden" name="WishlistImg" value="@Model.img" />
+                        <button type="submit" class="btn btn-secondary btn-sm">
+                            <img src="~/img/heart-15.png" alt="Wishlist" style="width: 20px; height: 20px;" />
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
