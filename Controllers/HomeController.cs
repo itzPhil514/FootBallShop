@@ -1,21 +1,29 @@
 using FootBallShop.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace FootBallShop.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly AppDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(AppDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var allLeagues = _context.League.ToList();
+            var randomTshirts = _context.Jersey.Include(t => t.League).OrderBy(t => Guid.NewGuid()).Take(4).ToList();
+            //var allContinents = _context.Continents.ToList(); // Fetch all continents
+
+            ViewBag.AllLeagues = allLeagues;
+            //ViewBag.AllContinents = allContinents; // Pass continents to view
+
+            return View(randomTshirts);
         }
 
         public IActionResult Privacy()

@@ -1,8 +1,26 @@
-﻿@{
+﻿@model List<Jerseys>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="text-center">
+        <h2>FootBall Kits</h2>
+        <div class="row">
+            @foreach (var jerseys in Model)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="@Url.Content("~/img/jerseys/" + jerseys.img)" alt="@jerseys.Name" style="height: auto; object-fit: cover;" />
+                        <div class="card-body">
+                            <h5 class="card-title">@jerseys.Name</h5>
+                            <p class="card-text">
+                                <strong>Price:</strong> $@jerseys.Price <br />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
