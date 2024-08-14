@@ -84,7 +84,7 @@ namespace FootBallShop.Controllers
         }
 
         // GET: Leagues/Clubs/5
-        public async Task<IActionResult> Clubs(int? id)
+        public async Task<IActionResult> ClubsByLeague(int? id)
         {
             if (id == null)
             {

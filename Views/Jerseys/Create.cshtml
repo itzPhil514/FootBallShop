@@ -40,6 +40,17 @@
                 </select>
             </div>
             <div class="form-group">
+                <label asp-for="IsInter" class="control-label"></label>
+                <div>
+                    <input type="radio" asp-for="IsInter" value="true" id="IsInterTrue" />
+                    <label for="IsInterTrue">International</label>
+                </div>
+                <div>
+                    <input type="radio" asp-for="IsInter" value="false" id="IsInterFalse" />
+                    <label for="IsInterFalse">Regular</label>
+                </div>
+            </div>
+            <div class="form-group">
                 <label asp-for="img" class="control-label"></label>
                 <input asp-for="img" type="file" class="form-control" />
                 <span asp-validation-for="img" class="text-danger"></span>

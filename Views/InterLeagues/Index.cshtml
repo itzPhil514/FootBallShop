@@ -1,28 +1,28 @@
-﻿@model IEnumerable<FootBallShop.Models.Leagues>
+﻿@model IEnumerable<FootBallShop.Models.InterLeagues>
 
 @{
-    ViewData["Title"] = "Leagues";
+    ViewData["Title"] = "Index";
     Layout = "_Layout";
 }
 
 <div class="container my-4">
     <h2 class="text-center mb-4">Leagues</h2>
     <div class="row row-cols-1 row-cols-md-3 g-4">
-        @foreach (var league in Model)
+        @foreach (var interLeague in Model)
         {
             <div class="col mb-3">
-                <a href="@Url.Action("ClubsByLeague", "Leagues", new { id = league.LeagueId })" class="league-card-link">
+                <a href="@Url.Action("NationsByInterLeague", "InterLeagues", new { id = interLeague.interLeaguesId })" class="league-card-link">
                     <div class="card league-card">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                            @if (!string.IsNullOrEmpty(league.imgLeaguePath))
+                            @if (!string.IsNullOrEmpty(interLeague.img))
                             {
-                                <img src="@Url.Content($"~/img/leagues/{league.imgLeaguePath}")" class="league-img mb-2" alt="@league.LeagueName">
+                                <img src="@Url.Content($"~/img/interleagues/{interLeague.img}")" class="league-img mb-2" alt="@interLeague.interLeaguesName">
                             }
                             else
                             {
                                 <img src="~/img/default-placeholder.png" class="league-img mb-2" alt="No Image">
                             }
-                            <h5 class="card-title text-center">@league.LeagueName</h5>
+                            <h5 class="card-title text-center">@interLeague.interLeaguesName</h5>
                         </div>
                     </div>
                 </a>
@@ -33,4 +33,4 @@
 
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New League</a>
-</p>
+</p></table>

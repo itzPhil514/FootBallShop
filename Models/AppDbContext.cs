@@ -12,6 +12,8 @@ namespace FootBallShop.Models
         public DbSet<Jerseys> Jersey { get; set; }
         public DbSet<Leagues> League { get; set; }
         public DbSet<Clubs> Club { get; set; }
+        public DbSet<InterLeagues> InterLeague { get; set; }
+        public DbSet<Nations> Nation { get; set; }
         public DbSet<Cart> CartItems { get; set; }
         public DbSet<Wishlist> WishlistItems { get; set; }
 
