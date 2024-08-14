@@ -47,10 +47,26 @@ namespace FootBallShop.Controllers
         // GET: Jerseys/Create
         public IActionResult Create()
         {
-            ViewData["ClubId"] = new SelectList(_context.Club, "ClubId", "Name");
-            ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName");
+            // Assuming you fetch these lists based on your logic
+            ViewBag.Leagues = _context.League
+                .Select(l => new SelectListItem { Value = l.LeagueId.ToString(), Text = l.LeagueName })
+                .ToList();
+
+            ViewBag.Clubs = _context.Club
+                .Select(c => new SelectListItem { Value = c.ClubId.ToString(), Text = c.Name })
+                .ToList();
+
+            ViewBag.InterLeagues = _context.InterLeague
+                .Select(il => new SelectListItem { Value = il.interLeaguesId.ToString(), Text = il.interLeaguesName })
+                .ToList();
+
+            ViewBag.Nations = _context.Nation
+                .Select(n => new SelectListItem { Value = n.NationId.ToString(), Text = n.Name })
+                .ToList();
+
             return View();
         }
+
 
         // POST: Jerseys/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -198,6 +214,33 @@ namespace FootBallShop.Controllers
         private bool JerseysExists(int id)
         {
             return _context.Jersey.Any(e => e.JerseysId == id);
+        }
+        [HttpGet]
+        public JsonResult GetInternationalLeaguesAndNations()
+        {
+            var interLeagues = _context.InterLeague
+                .Select(il => new { value = il.interLeaguesId, text = il.interLeaguesName })
+                .ToList();
+
+            var nations = _context.Nation
+                .Select(n => new { value = n.NationId, text = n.Name })
+                .ToList();
+
+            return Json(new { interLeagues, nations });
+        }
+
+        [HttpGet]
+        public JsonResult GetRegularLeaguesAndClubs()
+        {
+            var leagues = _context.League
+                .Select(l => new { value = l.LeagueId, text = l.LeagueName })
+                .ToList();
+
+            var clubs = _context.Club
+                .Select(c => new { value = c.ClubId, text = c.Name })
+                .ToList();
+
+            return Json(new { leagues, clubs });
         }
     }
 }

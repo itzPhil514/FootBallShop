@@ -31,6 +31,6 @@ namespace FootBallShop.Models
         public virtual Clubs Club { get; set; }
 
         public string img { get; set; }
-        public bool IsInter {  get; set; }
+        public bool IsInter { get; set; } = true;
     }
 }

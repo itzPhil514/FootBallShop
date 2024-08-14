@@ -12,49 +12,106 @@
     <div class="col-md-4">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- IsInter Radio Buttons -->
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="IsInter" class="control-label"></label>
+                <div class="form-check form-check-inline">
+                    <input type="radio" asp-for="IsInter" value="true" id="IsInterTrue" class="form-check-input" />
+                    <label for="IsInterTrue" class="form-check-label">International</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" asp-for="IsInter" value="false" id="IsInterFalse" class="form-check-input" checked />
+                    <label for="IsInterFalse" class="form-check-label">Regular</label>
+                </div>
+            </div>
+
+            <!-- Name Input -->
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Name</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Size" class="control-label"></label>
-                <input asp-for="Size" class="form-control" />
+                <label asp-for="Size" class="control-label">Size</label>
+                <select asp-for="Size" class="form-control">
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                    <option value="XXXL">XXXL</option>
+                </select>
                 <span asp-validation-for="Size" class="text-danger"></span>
             </div>
+
+            <!-- League Dropdown -->
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LeagueId" class="control-label"></label>
-                <select asp-for="LeagueId" id="leagueSelect" class="form-control" asp-items="ViewBag.LeagueId">
+                <label id="leagueLabel" asp-for="LeagueId" class="control-label">League</label>
+                <select asp-for="LeagueId" id="leagueSelect" class="form-control">
                     <option value="">Select a League</option>
+                    <!-- Populate leagues based on whether International or Regular -->
+                    <select asp-for="LeagueId" id="leagueSelect" class="form-control">
+                        <option value="">Select a League</option>
+                        @if (Model.IsInter == true)
+                        {
+                            if (ViewBag.InterLeagues != null)
+                            {
+                                foreach (var league in ViewBag.InterLeagues as List<SelectListItem>)
+                                {
+                                    <option value="@league.Value">@league.Text</option>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (ViewBag.Leagues != null)
+                            {
+                                foreach (var league in ViewBag.Leagues as List<SelectListItem>)
+                                {
+                                    <option value="@league.Value">@league.Text</option>
+                                }
+                            }
+                        }
+                    </select>
                 </select>
             </div>
+
+            <!-- Club or Nation Dropdown -->
             <div class="form-group">
-                <label asp-for="ClubId" class="control-label"></label>
-                <select asp-for="ClubId" id="teamSelect" class="form-control">
-                    <option value="">Select a Club</option>
-                </select>
+                @if (Model.IsInter)
+                {
+                    <label id="nationLabel" asp-for="ClubId" class="control-label">Nation</label>
+                    <select asp-for="ClubId" id="nationSelect" class="form-control">
+                        <option value="">Select a Nation</option>
+                        @foreach (var nation in ViewBag.Nations as List<SelectListItem>)
+                        {
+                            <option value="@nation.Value">@nation.Text</option>
+                        }
+                    </select>
+                }
+                else
+                {
+                    <label id="clubLabel" asp-for="ClubId" class="control-label">Club</label>
+                    <select asp-for="ClubId" id="teamSelect" class="form-control">
+                        <option value="">Select a Club</option>
+                        @foreach (var club in ViewBag.Clubs as List<SelectListItem>)
+                        {
+                            <option value="@club.Value">@club.Text</option>
+                        }
+                    </select>
+                }
             </div>
+
             <div class="form-group">
-                <label asp-for="IsInter" class="control-label"></label>
-                <div>
-                    <input type="radio" asp-for="IsInter" value="true" id="IsInterTrue" />
-                    <label for="IsInterTrue">International</label>
-                </div>
-                <div>
-                    <input type="radio" asp-for="IsInter" value="false" id="IsInterFalse" />
-                    <label for="IsInterFalse">Regular</label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="img" class="control-label"></label>
+                <label asp-for="img" class="control-label">Logo</label>
                 <input asp-for="img" type="file" class="form-control" />
                 <span asp-validation-for="img" class="text-danger"></span>
             </div>
+
+            <!-- Submit Button -->
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -65,11 +122,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    <script src="~/js/site.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-}
