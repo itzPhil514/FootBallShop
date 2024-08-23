@@ -47,23 +47,6 @@ namespace FootBallShop.Controllers
         // GET: Jerseys/Create
         public IActionResult Create()
         {
-            // Assuming you fetch these lists based on your logic
-            ViewBag.Leagues = _context.League
-                .Select(l => new SelectListItem { Value = l.LeagueId.ToString(), Text = l.LeagueName })
-                .ToList();
-
-            ViewBag.Clubs = _context.Club
-                .Select(c => new SelectListItem { Value = c.ClubId.ToString(), Text = c.Name })
-                .ToList();
-
-            ViewBag.InterLeagues = _context.InterLeague
-                .Select(il => new SelectListItem { Value = il.interLeaguesId.ToString(), Text = il.interLeaguesName })
-                .ToList();
-
-            ViewBag.Nations = _context.Nation
-                .Select(n => new SelectListItem { Value = n.NationId.ToString(), Text = n.Name })
-                .ToList();
-
             return View();
         }
 
@@ -241,6 +224,28 @@ namespace FootBallShop.Controllers
                 .ToList();
 
             return Json(new { leagues, clubs });
+        }
+
+        [HttpGet]
+        public JsonResult GetClubsByLeague(int leagueId)
+        {
+            var clubs = _context.Club
+                .Where(c => c.LeagueId == leagueId)
+                .Select(c => new { value = c.ClubId, text = c.Name })
+                .ToList();
+
+            return Json(new { clubs });
+        }
+
+        [HttpGet]
+        public JsonResult GetNationsByInterLeague(int interLeagueId)
+        {
+            var nations = _context.Nation
+                .Where(n => n.interLeaguesId == interLeagueId)
+                .Select(n => new { value = n.NationId, text = n.Name })
+                .ToList();
+
+            return Json(new { nations });
         }
     }
 }

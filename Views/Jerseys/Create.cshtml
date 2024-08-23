@@ -15,7 +15,7 @@
 
             <!-- IsInter Radio Buttons -->
             <div class="form-group">
-                <label asp-for="IsInter" class="control-label"></label>
+                <label asp-for="IsInter" class="control-label">Type: </label>
                 <div class="form-check form-check-inline">
                     <input type="radio" asp-for="IsInter" value="true" id="IsInterTrue" class="form-check-input" />
                     <label for="IsInterTrue" class="form-check-label">International</label>
@@ -33,6 +33,14 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
+            <!-- Price Input -->
+            <div class="form-group">
+                <label asp-for="Price" class="control-label">Price</label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <!-- Size Dropdown -->
             <div class="form-group">
                 <label asp-for="Size" class="control-label">Size</label>
                 <select asp-for="Size" class="form-control">
@@ -47,64 +55,43 @@
                 <span asp-validation-for="Size" class="text-danger"></span>
             </div>
 
-            <!-- League Dropdown -->
-            <div class="form-group">
-                <label id="leagueLabel" asp-for="LeagueId" class="control-label">League</label>
-                <select asp-for="LeagueId" id="leagueSelect" class="form-control">
-                    <option value="">Select a League</option>
-                    <!-- Populate leagues based on whether International or Regular -->
-                    <select asp-for="LeagueId" id="leagueSelect" class="form-control">
-                        <option value="">Select a League</option>
-                        @if (Model.IsInter == true)
-                        {
-                            if (ViewBag.InterLeagues != null)
-                            {
-                                foreach (var league in ViewBag.InterLeagues as List<SelectListItem>)
-                                {
-                                    <option value="@league.Value">@league.Text</option>
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (ViewBag.Leagues != null)
-                            {
-                                foreach (var league in ViewBag.Leagues as List<SelectListItem>)
-                                {
-                                    <option value="@league.Value">@league.Text</option>
-                                }
-                            }
-                        }
+            <!-- League and Club Dropdowns -->
+            <div id="regular-jersey-fields">
+                <div class="form-group">
+                    <label asp-for="LeagueId" class="control-label">League</label>
+                    <select asp-for="LeagueId" class="form-control" id="LeagueDropdown">
+                        <option value="">Select League</option>
                     </select>
-                </select>
+                    <span asp-validation-for="LeagueId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ClubId" class="control-label">Club</label>
+                    <select asp-for="ClubId" class="form-control" id="ClubDropdown">
+                        <option value="">Select Club</option>
+                    </select>
+                    <span asp-validation-for="ClubId" class="text-danger"></span>
+                </div>
             </div>
 
-            <!-- Club or Nation Dropdown -->
-            <div class="form-group">
-                @if (Model.IsInter)
-                {
-                    <label id="nationLabel" asp-for="ClubId" class="control-label">Nation</label>
-                    <select asp-for="ClubId" id="nationSelect" class="form-control">
-                        <option value="">Select a Nation</option>
-                        @foreach (var nation in ViewBag.Nations as List<SelectListItem>)
-                        {
-                            <option value="@nation.Value">@nation.Text</option>
-                        }
+            <!-- InterLeague and Nation Dropdowns -->
+            <div id="international-jersey-fields" style="display:none;">
+                <div class="form-group">
+                    <label asp-for="interLeaguesId" class="control-label">International League</label>
+                    <select asp-for="interLeaguesId" class="form-control" id="InterLeagueDropdown">
+                        <option value="">Select International League</option>
                     </select>
-                }
-                else
-                {
-                    <label id="clubLabel" asp-for="ClubId" class="control-label">Club</label>
-                    <select asp-for="ClubId" id="teamSelect" class="form-control">
-                        <option value="">Select a Club</option>
-                        @foreach (var club in ViewBag.Clubs as List<SelectListItem>)
-                        {
-                            <option value="@club.Value">@club.Text</option>
-                        }
+                    <span asp-validation-for="interLeaguesId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NationId" class="control-label">Nation</label>
+                    <select asp-for="NationId" class="form-control" id="NationDropdown">
+                        <option value="">Select Nation</option>
                     </select>
-                }
+                    <span asp-validation-for="NationId" class="text-danger"></span>
+                </div>
             </div>
 
+            <!-- Logo Input -->
             <div class="form-group">
                 <label asp-for="img" class="control-label">Logo</label>
                 <input asp-for="img" type="file" class="form-control" />
@@ -122,3 +109,78 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Show/hide fields based on IsInter selection
+            $('input[name="IsInter"]').change(function () {
+                toggleFields();
+                loadLeaguesOrInterLeagues();
+            });
+
+            function toggleFields() {
+                if ($('#IsInterTrue').is(':checked')) {
+                    $('#regular-jersey-fields').hide();
+                    $('#international-jersey-fields').show();
+                } else {
+                    $('#regular-jersey-fields').show();
+                    $('#international-jersey-fields').hide();
+                }
+            }
+
+            function loadLeaguesOrInterLeagues() {
+                if ($('#IsInterTrue').is(':checked')) {
+                    $.getJSON('@Url.Action("GetInternationalLeaguesAndNations")', function (data) {
+                        fillDropdown('#InterLeagueDropdown', data.interLeagues);
+                    });
+                } else {
+                    $.getJSON('@Url.Action("GetRegularLeaguesAndClubs")', function (data) {
+                        fillDropdown('#LeagueDropdown', data.leagues);
+                    });
+                }
+            }
+
+            function loadClubsOrNationsByLeagueId(leagueId, isInternational) {
+                if (isInternational) {
+                    $.getJSON('@Url.Action("GetNationsByInterLeague")', { interLeagueId: leagueId }, function (data) {
+                        fillDropdown('#NationDropdown', data.nations);
+                    });
+                } else {
+                    $.getJSON('@Url.Action("GetClubsByLeague")', { leagueId: leagueId }, function (data) {
+                        fillDropdown('#ClubDropdown', data.clubs);
+                    });
+                }
+            }
+
+            function fillDropdown(selector, items) {
+                var dropdown = $(selector);
+                dropdown.empty();
+                dropdown.append('<option value="">Select a League/International League</option>');
+                $.each(items, function (index, item) {
+                    dropdown.append('<option value="' + item.value + '">' + item.text + '</option>');
+                });
+            }
+
+            // On league or interleague change, load corresponding clubs or nations
+            $('#LeagueDropdown').change(function () {
+                var leagueId = $(this).val();
+                if (leagueId) {
+                    loadClubsOrNationsByLeagueId(leagueId, false);
+                }
+            });
+
+            $('#InterLeagueDropdown').change(function () {
+                var interLeagueId = $(this).val();
+                if (interLeagueId) {
+                    loadClubsOrNationsByLeagueId(interLeagueId, true);
+                }
+            });
+
+            // Initial load
+            toggleFields();
+            loadLeaguesOrInterLeagues();
+        });
+    </script>
+    }

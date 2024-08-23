@@ -19,22 +19,37 @@ namespace FootBallShop.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder); // Add this to ensure Identity tables are created
 
-            // Disable cascade delete for Jerseys.LeagueId
+            // Cascade delete on Nation
+            modelBuilder.Entity<Jerseys>()
+                .HasOne(j => j.Nation)
+                .WithMany(n => n.Jerseys)
+                .HasForeignKey(j => j.NationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Cascade delete on Club
+            modelBuilder.Entity<Jerseys>()
+                .HasOne(j => j.Club)
+                .WithMany(c => c.Jersey)
+                .HasForeignKey(j => j.ClubId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Restrict delete on League
             modelBuilder.Entity<Jerseys>()
                 .HasOne(j => j.League)
                 .WithMany(l => l.Jersey)
                 .HasForeignKey(j => j.LeagueId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Disable cascade delete for Jerseys.TeamId
+            // Restrict delete on InterLeague
             modelBuilder.Entity<Jerseys>()
-                .HasOne(j => j.Club)
-                .WithMany(c => c.Jersey)
-                .HasForeignKey(j => j.ClubId)
+                .HasOne(j => j.InterLeague)
+                .WithMany(il => il.Jersey)
+                .HasForeignKey(j => j.interLeaguesId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
+
 
     }
 }
