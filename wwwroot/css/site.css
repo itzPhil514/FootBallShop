@@ -1,55 +1,37 @@
+/* Global Styles */
 html {
-    font-size: 14px;
+    font-size: 16px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
     html {
         font-size: 16px;
+        font-family: Arial, sans-serif;
     }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-    position: relative;
-    min-height: 100%;
 }
 
 body {
     margin-bottom: 60px;
 }
-/*.card {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+/* Buttons */
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-.card-img-top {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-.card-body {
-    padding: 15px;
-}
-
-.card-footer {
-    background-color: #fff;
-    border-top: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-}*/
+/* Navbar */
 .nav-item.dropdown:hover .dropdown-menu {
     display: block;
-    margin-top: 0; /* Remove the margin so it aligns perfectly */
+    margin-top: 0;
 }
 
 .dropdown-menu {
-    margin-top: 0; /* Ensures the dropdown menu aligns with the parent */
+    margin-top: 0;
 }
 
+/* Image Zoom */
 .zoom-container {
     overflow: hidden;
 }
@@ -62,37 +44,37 @@ body {
         transform: scale(1.2);
     }
 
-.card-link {
+/* Card Links */
+.card-link, .jersey-card-link, .home-jersey-card-link, .club-card-link, .league-card-link {
     text-decoration: none;
     color: inherit;
 }
 
-    .card-link:hover {
+    .card-link:hover, .jersey-card-link:hover, .home-jersey-card-link:hover, .club-card-link:hover, .league-card-link:hover .card-title {
         text-decoration: none;
     }
 
+/* Profile Icon */
 .profile-icon {
     width: 45px;
     height: 30px;
 }
 
+/* Navbar Alignment */
 .navbar-nav {
-    margin-left: 0px;
+    margin-left: 0;
 }
 
     .navbar-nav .nav-item {
         margin-left: auto;
     }
 
-.cart-icon-container {
+/* Cart and Wishlist Icons */
+.cart-icon-container, .heart-icon-container {
     position: relative;
 }
 
-.heart-icon-container {
-    position: relative;
-}
-
-.cart-quantity-badge {
+.cart-quantity-badge, .wishlist-quantity-badge {
     position: absolute;
     top: -5px;
     right: -10px;
@@ -103,17 +85,7 @@ body {
     font-size: 12px;
 }
 
-.wishlist-quantity-badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: red;
-    color: white;
-    border-radius: 50%;
-    padding: 3px 8px;
-    font-size: 12px;
-}
-
+/* Footer */
 .footer {
     background-color: #222;
     color: #fff;
@@ -154,7 +126,7 @@ body {
         color: #fff;
     }
 
-
+/* Gradient Backgrounds */
 .gradient-custom-2 {
     background: #fccb90;
     background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
@@ -174,10 +146,16 @@ body {
     }
 }
 
+/* Containers */
 .container {
     padding-top: 20px;
 }
 
+.club-jerseys-container, .home-page-container {
+    padding-top: 20px;
+}
+
+/* Club Cards */
 .club-card {
     height: 300px;
     display: flex;
@@ -197,26 +175,61 @@ body {
     }
 
 .club-img {
-    max-height: 70%;
-    max-width: 100%;
-    object-fit: contain;
-    margin-bottom: 10px;
+    height: 120px;
+    width: auto;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
-.card-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+/* Jersey Cards */
+.jersey-card {
+    border: none;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 90%; /* Reduce the card width */
+    margin: 0 auto; /* Center the card */
 }
 
-.card-title {
-    margin-top: 10px;
-    font-size: 1.2rem;
-    font-family: Arial, sans-serif;
-    color: var(--text-color);
+    .jersey-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+.jersey-card-img-top, .home-jersey-card-img-top {
+    width: 100%;
+    height: 250px; /* Reduced height */
+    object-fit: contain; /* Ensure the image fits inside the card */
 }
 
+.jersey-card-body, .home-jersey-card-body {
+    padding: 0.75rem; /* Slightly reduced padding */
+    background-color: #fff;
+}
+
+.jersey-card-title, .home-jersey-card-title {
+    font-size: 1.15rem; /* Slightly smaller font size */
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.jersey-card-text, .home-jersey-card-text {
+    font-size: 0.95rem; /* Slightly smaller font size */
+    color: #666;
+}
+
+
+/* Page Titles */
+.page-title, .club-page-title, .home-page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0;
+}
+
+/* Root Variables */
 :root {
     --card-bg: #ffffff;
     --card-border: #ddd;
@@ -231,143 +244,100 @@ body {
     }
 }
 
-.container {
-    padding-top: 20px;
-}
-
-.card {
-    height: 100%;
+/* Detail Page */
+.detail-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.image-wrapper {
+    border-radius: 0.5rem;
     overflow: hidden;
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
-
-.card-img-top {
-    max-height: 70%;
-    max-width: 100%;
-    object-fit: contain;
-    margin-bottom: 5px;
-}
-
-.card-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-
-.card-text {
-    font-family: Arial, sans-serif;
-    color: var(--text-color);
-}
-
-:root {
-    --card-bg: #ffffff;
-    --card-border: #ddd;
-    --text-color: #000000;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --card-bg: #2c2c2c;
-        --card-border: #444;
-        --text-color: #ffffff;
-    }
-}
-
-.detail-card {
-    background-color: var(--detail-card-bg);
-    border: 1px solid var(--detail-card-border);
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-    .detail-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
-
-.detail-card-body {
-    padding: 20px;
-}
-
-.detail-card-title {
-    font-size: 1.8rem;
-    font-family: Arial, sans-serif;
-    color: var(--detail-text-color);
-    margin-bottom: 15px;
-}
-
-.detail-card-text {
-    font-size: 1.2rem;
-    font-family: Arial, sans-serif;
-    color: var(--detail-text-color);
-    margin-bottom: 10px;
+    margin-bottom: 1.5rem;
 }
 
 .detail-img {
-    max-width: 100%;
+    width: 90%;
+    height: auto;
     object-fit: cover;
-    border-radius: 5px 0 0 5px;
 }
 
-.detail-form-group {
-    margin-bottom: 15px;
+.detail-info {
+    background-color: #f9f9f9;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.detail-form-control {
-    font-family: Arial, sans-serif;
-    background-color: var(--form-bg);
-    border: 1px solid var(--form-border);
-    color: var(--detail-text-color);
-    border-radius: 5px;
+.detail-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
 }
 
-.detail-btn {
-    background-color: var(--btn-bg);
-    border: none;
-    color: #fff;
-    padding: 10px 20px;
-    font-family: Arial, sans-serif;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+.detail-text {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
 }
 
-    .detail-btn:hover {
-        background-color: var(--btn-hover-bg);
+/* Form Controls */
+.detail-form {
+    margin-top: 1.5rem;
+}
+
+.quantity-control .btn {
+    border-radius: 0;
+}
+
+.quantity-control input {
+    max-width: 80px;
+}
+
+.wishlist-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wishlist-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 0.25rem;
+}
+
+.btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+    border-radius: 0.25rem;
+}
+
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: #fff;
     }
 
+/* Quantity Input */
 #quantity {
     -moz-appearance: textfield;
     appearance: textfield;
 }
 
-    /* Hide number input arrows in WebKit browsers */
     #quantity::-webkit-inner-spin-button,
     #quantity::-webkit-outer-spin-button {
         -webkit-appearance: none;
         margin: 0;
     }
 
-/* Align wishlist button and cart button */
-.d-flex .btn-outline-secondary {
-    margin-left: 10px;
-}
-
+/* Detail Page Variables */
 :root {
     --detail-card-bg: #ffffff;
     --detail-card-border: #ddd;
@@ -390,6 +360,7 @@ body {
     }
 }
 
+/* Table Styling */
 .table img {
     border-radius: 5px;
 }
@@ -398,49 +369,63 @@ body {
     vertical-align: middle;
 }
 
-.league-card-link {
-    text-decoration: none;
-    color: inherit;
+/* League and Continent Cards */
+.league-img, .continent-img {
+    max-height: 120px;
+    object-fit: cover;
 }
 
-    .league-card-link:hover .card-title {
-        text-decoration: none;
-    }
-
-.league-img {
-    max-height: 100px;
-    width: auto;
-    object-fit: contain;
-    margin-bottom: 10px;
-}
-
-.league-card {
-    border: 1px solid #ddd;
+.league-card, .continent-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
 }
 
-    .league-card:hover {
-        transform: scale(1.05);
+    .league-card:hover, .continent-card:hover {
+        transform: translateY(-5px);
     }
 
-.continent-img {
-    max-height: 100px;
-    width: auto;
-    object-fit: contain;
-    margin-bottom: 10px;
-}
-
-.continent-card {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
+/* Home Jersey Cards */
+.home-jersey-card {
+    border: none;
+    border-radius: 0.5rem;
     overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-    .continent-card:hover {
-        transform: scale(1.05);
+    .home-jersey-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     }
+
+.home-jersey-card-img-top {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+}
+
+/* Club Container and Page Titles */
+.club-page-title {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.club-jerseys-container {
+    padding: 0 2rem;
+}
+
+/* Home Page Specific Styles */
+.home-page-title {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.home-page-container {
+    padding: 0 2rem;
+}

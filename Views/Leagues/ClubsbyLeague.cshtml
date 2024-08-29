@@ -5,17 +5,17 @@
     Layout = "_Layout";
 }
 
-<div class="container my-4">
-    <h2 class="text-center mb-4">
-        <img src="@Url.Content($"~/img/leagues/{Model.imgLeaguePath}")" alt="League Image" style="height: 100px; width: auto;" />
+<div class="league-clubs-container my-4">
+    <h2 class="league-title text-center mb-4">
+        <img src="@Url.Content($"~/img/leagues/{Model.imgLeaguePath}")" alt="League Image" class="league-img" />
         @Model.LeagueName
     </h2>
     <div class="row row-cols-1 row-cols-md-3 g-4">
         @foreach (var club in Model.Clubs)
         {
             <div class="col mb-3">
-                <a href="@Url.Action("Jersey", "Clubs", new { id = club.ClubId })" class="card-link">
-                    <div class="card club-card">
+                <a href="@Url.Action("Jersey", "Clubs", new { id = club.ClubId })" class="club-card-link">
+                    <div class="club-card card h-100">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
                             @if (!string.IsNullOrEmpty(club.img))
                             {
@@ -25,7 +25,7 @@
                             {
                                 <img src="~/img/default-placeholder.png" class="club-img mb-2" alt="No Image">
                             }
-                            <h5 class="card-title text-center">@club.Name</h5>
+                            <h5 class="club-card-title text-center">@club.Name</h5>
                         </div>
                     </div>
                 </a>
@@ -33,7 +33,7 @@
         }
     </div>
 
-    <p>
+    <p class="mt-4">
         <a asp-action="Create" asp-controller="Clubs" class="btn btn-primary">Add Club</a>
         <a asp-action="Index" asp-controller="Leagues" class="btn btn-secondary">Back to Leagues</a>
     </p>

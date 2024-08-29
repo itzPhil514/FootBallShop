@@ -88,3 +88,12 @@ $(document).ready(function () {
     // Trigger change event on page load to set initial values
     $('input[name="IsInter"]:checked').trigger('change');
 });
+
+function changeQuantity(change) {
+    const input = document.getElementById('quantity');
+    let currentValue = parseInt(input.value, 10);
+    if (isNaN(currentValue)) currentValue = 1;
+    currentValue += change;
+    if (currentValue < 1) currentValue = 1;
+    input.value = currentValue;
+}
