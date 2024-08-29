@@ -9,17 +9,19 @@
         <div class="row">
             @foreach (var jerseys in Model)
             {
-                <div class="col-md-3 mb-4">
+                 <div class="col-md-3 mb-4">
+                    <a asp-action="Details" asp-controller="Jerseys" asp-route-id="@jerseys.JerseysId" class="card-link">
                     <div class="card h-100">
-                        <img class="card-img-top" src="@Url.Content("~/img/jerseys/" + jerseys.img)" alt="@jerseys.Name" style="height: auto; object-fit: cover;" />
+                            <img class="card-img-top" src="@Url.Content($"~/img/jerseys/{jerseys.img}")" alt="@jerseys.Name" style="height: auto; object-fit: cover;" />
                         <div class="card-body">
-                            <h5 class="card-title">@jerseys.Name</h5>
+                                <h5 class="card-title">@jerseys.Name</h5>
                             <p class="card-text">
-                                <strong>Price:</strong> $@jerseys.Price <br />
+                                    <strong>Price:</strong> $@jerseys.Price <br />
                             </p>
                         </div>
                     </div>
-                </div>
+                </a>
+            </div>
             }
         </div>
     </div>

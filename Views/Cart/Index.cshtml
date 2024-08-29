@@ -32,26 +32,39 @@
                 <td>@item.Size</td>
                 <td>$@item.jersey.Price</td>
                 <td>
-                    <form asp-action="UpdateQuantity" method="post" style="display:inline;">
+                    <form id="decrease-form-@item.jersey?.JerseysId-@item.Size" asp-action="DecreaseQuantity" method="post" style="display:inline;">
                         <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
                         <input type="hidden" name="Size" value="@item.Size" />
-                        <input type="number" name="Quantity" value="@item.Quantity" min="1" class="form-control d-inline-block" style="width: 60px;">
-                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                        <button type="submit" class="btn btn-primary btn-sm">-</button>
+                    </form>
+
+                    <form id="quantity-form-@item.jersey?.JerseysId-@item.Size" asp-action="UpdateQuantity" method="post" style="display:inline;">
+                        <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
+                        <input type="hidden" name="Size" value="@item.Size" />
+                        <input type="number" name="Quantity" value="@item.Quantity" min="1" class="form-control d-inline-block text-center" style="width: 60px;" id="quantity-input-@item.jersey?.JerseysId-@item.Size" onchange="submitForm(this)">
+                    </form>
+
+                    <form id="increase-form-@item.jersey?.JerseysId-@item.Size" asp-action="IncreaseQuantity" method="post" style="display:inline;">
+                        <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
+                        <input type="hidden" name="Size" value="@item.Size" />
+                        <button type="submit" class="btn btn-primary btn-sm">+</button>
                     </form>
                 </td>
                 <td>$@(item.jersey.Price * item.Quantity)</td>
                 <td>
-                    <form asp-action="RemoveFromCart" method="post" style="display:inline;">
-                        <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
-                        <input type="hidden" name="Size" value="@item.Size" />
-                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                    </form>
                     <form asp-action="AddToWishlist" method="post" asp-controller="Wishlist" style="display:inline;">
                         <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
                         <input type="hidden" name="Size" value="@item.Size" />
                         <button type="submit" class="btn btn-secondary btn-sm">
                             <img src="~/img/heart-15.png" alt="Wishlist" style="width: 20px; height: 20px;" />
                         </button>
+                    </form>
+                    <form asp-action="RemoveFromCart" method="post" style="display:inline;">
+                        <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
+                        <input type="hidden" name="Size" value="@item.Size" />
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <img src="~/img/bin.png" alt="Wishlist" style="width: 20px; height: 20px;" />
+                            </button>
                     </form>
                 </td>
             </tr>

@@ -351,6 +351,23 @@ body {
         background-color: var(--btn-hover-bg);
     }
 
+#quantity {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+    /* Hide number input arrows in WebKit browsers */
+    #quantity::-webkit-inner-spin-button,
+    #quantity::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+/* Align wishlist button and cart button */
+.d-flex .btn-outline-secondary {
+    margin-left: 10px;
+}
+
 :root {
     --detail-card-bg: #ffffff;
     --detail-card-border: #ddd;
