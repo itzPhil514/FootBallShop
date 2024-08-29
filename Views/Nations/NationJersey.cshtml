@@ -1,0 +1,31 @@
+﻿@model FootBallShop.Models.Nations
+
+@{
+    ViewData["Title"] = "Jerseys for " + Model.Name;
+    Layout = "_Layout";
+}
+
+<div class="club-jerseys-container my-4">
+    <div class="d-flex align-items-center mb-4">
+        <img src="@Url.Content($"~/img/nations/{Model.img}")" alt="@Model.Name" class="club-img me-3" />
+        <h1 class="club-page-title">@Model.Name</h1>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var jersey in Model.Jerseys)
+        {
+            <div class="col mb-4">
+                <a asp-action="Details" asp-controller="Jerseys" asp-route-id="@jersey.JerseysId" class="jersey-card-link">
+                    <div class="jersey-card h-100">
+                        <img class="jersey-card-img-top" src="@Url.Content($"~/img/jerseys/{jersey.img}")" alt="@jersey.Name" />
+                        <div class="jersey-card-body">
+                            <h5 class="jersey-card-title">@jersey.Name</h5>
+                            <p class="jersey-card-text">
+                                <strong>Price:</strong> $@jersey.Price
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>

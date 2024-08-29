@@ -28,6 +28,21 @@ namespace FootBallShop.Controllers
             return View(await appDbContext.ToListAsync());
         }
 
+        public async Task<IActionResult> NationJersey(int id)
+        {
+            var nation = await _context.Nation
+                .Include(n => n.Jerseys)
+                .FirstOrDefaultAsync(n => n.NationId == id);
+
+            if (nation == null)
+            {
+                return NotFound();
+            }
+
+            return View(nation);
+        }
+
+
         // GET: Nations/Details/5
         public async Task<IActionResult> Details(int? id)
         {

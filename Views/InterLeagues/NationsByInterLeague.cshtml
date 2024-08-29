@@ -1,7 +1,7 @@
 ﻿@model FootBallShop.Models.InterLeagues
 
 @{
-    ViewData["Title"] = "Clubs for " + Model.interLeaguesName;
+    ViewData["Title"] = Model.interLeaguesName;
     Layout = "_Layout";
 }
 
@@ -14,7 +14,7 @@
         @foreach (var nation in Model.Nation)
         {
             <div class="col mb-3">
-                <a href="@Url.Action("Jersey", "Nations", new { id = nation.NationId })" class="card-link">
+                <a href="@Url.Action("NationJersey", "Nations", new { id = nation.NationId })" class="card-link">
                     <div class="card club-card">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
                             @if (!string.IsNullOrEmpty(nation.img))
