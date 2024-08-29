@@ -17,8 +17,17 @@
                 <div class="detail-info">
                     <h2 class="detail-title">@Model.Name</h2>
                     <p class="detail-text"><strong>Price:</strong> $@Model.Price</p>
-                    <p class="detail-text"><strong>Team:</strong> @Model.Club.Name</p>
-                    <p class="detail-text"><strong>League:</strong> @Model.League.LeagueName</p>
+
+                    @if (Model.Club != null)
+                    {
+                        <p class="detail-text"><strong>Team:</strong> @Model.Club.Name</p>
+                        <p class="detail-text"><strong>League:</strong> @Model.League.LeagueName</p>
+                    }
+                    else if (Model.Nation != null)
+                    {
+                        <p class="detail-text"><strong>National Team:</strong> @Model.Nation.Name</p>
+                        <p class="detail-text"><strong>International League:</strong> @Model.Nation.InterLeagues.interLeaguesName</p>
+                    }
 
                     <!-- Add to Cart Form -->
                     <form asp-action="AddToCart" method="post" asp-controller="Cart" class="detail-form">
