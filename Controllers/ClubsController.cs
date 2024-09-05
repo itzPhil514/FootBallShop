@@ -8,7 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using FootBallShop.Models;
 using Microsoft.AspNetCore.Hosting;
 using System.Net.Http.Headers;
-using Twilio.TwiML.Voice;
+using Microsoft.AspNetCore.Identity;
+using System.IO;
 
 namespace FootBallShop.Controllers
 {
@@ -16,11 +17,13 @@ namespace FootBallShop.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ClubsController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
+        public ClubsController(AppDbContext context, IWebHostEnvironment webHostEnvironment, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _userManager = userManager;
         }
 
         // GET: Clubs
@@ -50,8 +53,14 @@ namespace FootBallShop.Controllers
         }
 
         // GET: Clubs/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            // Check if the user is in the Admin role
+            if (!User.Identity.IsAuthenticated || !await _userManager.IsInRoleAsync(await _userManager.GetUserAsync(User), "Admin"))
+            {
+                return RedirectToAction("AccessDenied", "Account"); // Redirect to an access denied page
+            }
+
             ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName");
             return View();
         }
@@ -61,6 +70,12 @@ namespace FootBallShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Clubs clubs)
         {
+            // Check if the user is in the Admin role
+            if (!User.Identity.IsAuthenticated || !await _userManager.IsInRoleAsync(await _userManager.GetUserAsync(User), "Admin"))
+            {
+                return RedirectToAction("AccessDenied", "Account"); // Redirect to an access denied page
+            }
+
             if (HttpContext.Request.Form.Files.Count > 0)
             {
                 var file = HttpContext.Request.Form.Files[0];
@@ -84,7 +99,7 @@ namespace FootBallShop.Controllers
                         await file.CopyToAsync(fileStream);
                     }
 
-                    clubs.img = uniqueFileName; 
+                    clubs.img = uniqueFileName;
                 }
             }
 
@@ -94,112 +109,113 @@ namespace FootBallShop.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Jersey(int id)
+        // GET: Clubs/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            var club = await _context.Club
-                .Include(c => c.Jersey)
-                .FirstOrDefaultAsync(c => c.ClubId == id);
-
-            if (club == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            return View(club);
+            var clubs = await _context.Club.FindAsync(id);
+            if (clubs == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the user is in the Admin role
+            if (!User.Identity.IsAuthenticated || !await _userManager.IsInRoleAsync(await _userManager.GetUserAsync(User), "Admin"))
+            {
+                return RedirectToAction("AccessDenied", "Account"); // Redirect to an access denied page
+            }
+
+            ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName", clubs.LeagueId);
+            return View(clubs);
         }
 
+        // POST: Clubs/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("ClubId,Name,LeagueId,img")] Clubs clubs)
+        {
+            if (id != clubs.ClubId)
+            {
+                return NotFound();
+            }
 
-        // GET: Clubs/Edit/5
-        /*  public async Task<IActionResult> Edit(int? id)
-          {
-              if (id == null)
-              {
-                  return NotFound();
-              }
+            // Check if the user is in the Admin role
+            if (!User.Identity.IsAuthenticated || !await _userManager.IsInRoleAsync(await _userManager.GetUserAsync(User), "Admin"))
+            {
+                return RedirectToAction("AccessDenied", "Account"); // Redirect to an access denied page
+            }
 
-              var clubs = await _context.Club.FindAsync(id);
-              if (clubs == null)
-              {
-                  return NotFound();
-              }
-              ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName", clubs.LeagueId);
-              return View(clubs);
-          }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(clubs);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ClubsExists(clubs.ClubId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName", clubs.LeagueId);
+            return View(clubs);
+        }
 
-          // POST: Clubs/Edit/5
-          // To protect from overposting attacks, enable the specific properties you want to bind to.
-          // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-          [HttpPost]
-          [ValidateAntiForgeryToken]
-          public async Task<IActionResult> Edit(int id, [Bind("ClubId,Name,LeagueId,img")] Clubs clubs)
-          {
-              if (id != clubs.ClubId)
-              {
-                  return NotFound();
-              }
+        // GET: Clubs/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-              if (ModelState.IsValid)
-              {
-                  try
-                  {
-                      _context.Update(clubs);
-                      await _context.SaveChangesAsync();
-                  }
-                  catch (DbUpdateConcurrencyException)
-                  {
-                      if (!ClubsExists(clubs.ClubId))
-                      {
-                          return NotFound();
-                      }
-                      else
-                      {
-                          throw;
-                      }
-                  }
-                  return RedirectToAction(nameof(Index));
-              }
-              ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName", clubs.LeagueId);
-              return View(clubs);
-          }
+            var clubs = await _context.Club
+                .Include(c => c.League)
+                .FirstOrDefaultAsync(m => m.ClubId == id);
+            if (clubs == null)
+            {
+                return NotFound();
+            }
 
-          // GET: Clubs/Delete/5
-          public async Task<IActionResult> Delete(int? id)
-          {
-              if (id == null)
-              {
-                  return NotFound();
-              }
+            // Check if the user is in the Admin role
+            if (!User.Identity.IsAuthenticated || !await _userManager.IsInRoleAsync(await _userManager.GetUserAsync(User), "Admin"))
+            {
+                return RedirectToAction("AccessDenied", "Account"); // Redirect to an access denied page
+            }
 
-              var clubs = await _context.Club
-                  .Include(c => c.League)
-                  .FirstOrDefaultAsync(m => m.ClubId == id);
-              if (clubs == null)
-              {
-                  return NotFound();
-              }
+            return View(clubs);
+        }
 
-              return View(clubs);
-          }
+        // POST: Clubs/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var clubs = await _context.Club.FindAsync(id);
+            if (clubs != null)
+            {
+                _context.Club.Remove(clubs);
+                await _context.SaveChangesAsync();
+            }
 
-          // POST: Clubs/Delete/5
-          [HttpPost, ActionName("Delete")]
-          [ValidateAntiForgeryToken]
-          public async Task<IActionResult> DeleteConfirmed(int id)
-          {
-              var clubs = await _context.Club.FindAsync(id);
-              if (clubs != null)
-              {
-                  _context.Club.Remove(clubs);
-              }
+            return RedirectToAction(nameof(Index));
+        }
 
-              await _context.SaveChangesAsync();
-              return RedirectToAction(nameof(Index));
-          }
-
-          private bool ClubsExists(int id)
-          {
-              return _context.Club.Any(e => e.ClubId == id);
-          }
-      }*/
+        private bool ClubsExists(int id)
+        {
+            return _context.Club.Any(e => e.ClubId == id);
+        }
     }
 }
