@@ -34,7 +34,10 @@
     </div>
 
     <p class="mt-4">
-        <a asp-action="Create" asp-controller="Clubs" class="btn btn-primary">Add Club</a>
-        <a asp-action="Index" asp-controller="Leagues" class="btn btn-secondary">Back to Leagues</a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Create" asp-controller="Clubs" class="btn btn-primary">Add Club</a>
+            <a asp-action="Index" asp-controller="Leagues" class="btn btn-secondary">Back to Leagues</a>
+        }
     </p>
 </div>

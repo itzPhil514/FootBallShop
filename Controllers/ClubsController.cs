@@ -53,14 +53,8 @@ namespace FootBallShop.Controllers
         }
 
         // GET: Clubs/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            // Check if the user is in the Admin role
-            if (!User.Identity.IsAuthenticated || !await _userManager.IsInRoleAsync(await _userManager.GetUserAsync(User), "Admin"))
-            {
-                return RedirectToAction("AccessDenied", "Account"); // Redirect to an access denied page
-            }
-
             ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName");
             return View();
         }
@@ -70,12 +64,6 @@ namespace FootBallShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Clubs clubs)
         {
-            // Check if the user is in the Admin role
-            if (!User.Identity.IsAuthenticated || !await _userManager.IsInRoleAsync(await _userManager.GetUserAsync(User), "Admin"))
-            {
-                return RedirectToAction("AccessDenied", "Account"); // Redirect to an access denied page
-            }
-
             if (HttpContext.Request.Form.Files.Count > 0)
             {
                 var file = HttpContext.Request.Form.Files[0];
@@ -107,6 +95,20 @@ namespace FootBallShop.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Jersey(int id)
+        {
+            var club = await _context.Club
+                .Include(c => c.Jersey)
+                .FirstOrDefaultAsync(c => c.ClubId == id);
+
+            if (club == null)
+            {
+                return NotFound();
+            }
+
+            return View(club);
         }
 
         // GET: Clubs/Edit/5

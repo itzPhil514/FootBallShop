@@ -34,7 +34,10 @@
     </div>
 
     <p>
-        <a asp-action="Create" asp-controller="Nations" class="btn btn-primary">Add Nation</a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Create" asp-controller="Nations" class="btn btn-primary">Add Nation</a>
+        }
         <a asp-action="Index" asp-controller="InterLeagues" class="btn btn-secondary">Back to International Leagues</a>
     </p>
 </div>

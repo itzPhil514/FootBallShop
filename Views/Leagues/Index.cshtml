@@ -32,5 +32,8 @@
 </div>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Create New League</a>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create" class="btn btn-primary">Create New League</a>
+    }
 </p>
