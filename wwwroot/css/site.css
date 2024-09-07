@@ -429,3 +429,32 @@ body {
 .home-page-container {
     padding: 0 2rem;
 }
+/* Adjust the card's width and height */
+.nation-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Make sure images fit within their container while maintaining aspect ratio */
+.nation-img {
+    width: 100%; /* Make image width fit the card */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 200px; /* Control max height of the image */
+    object-fit: cover; /* Ensure the image covers the container */
+}
+
+/* Optionally, you can add more styling to the card and image */
+.nation-card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card-title {
+    font-size: 1.1rem;
+}

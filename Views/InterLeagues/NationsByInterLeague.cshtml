@@ -7,23 +7,23 @@
 
 <div class="container my-4">
     <h2 class="text-center mb-4">
-        <img src="@Url.Content($"~/img/interleagues/{Model.img}")" alt="League Image" style="height: 100px; width: auto;" />
+        <img src="@Url.Content($"~/img/interleagues/{Model.img}")" alt="League Image" class="league-img" />
         @Model.interLeaguesName
     </h2>
     <div class="row row-cols-1 row-cols-md-3 g-4">
         @foreach (var nation in Model.Nation)
         {
             <div class="col mb-3">
-                <a href="@Url.Action("NationJersey", "Nations", new { id = nation.NationId })" class="card-link">
-                    <div class="card club-card">
+                <a href="@Url.Action("NationJersey", "Nations", new { id = nation.NationId })" class="nation-card-link">
+                    <div class="card nation-card">
                         <div class="card-body d-flex flex-column justify-content-center align-items-center">
                             @if (!string.IsNullOrEmpty(nation.img))
                             {
-                                <img src="@Url.Content($"~/img/nations/{nation.img}")" class="club-img mb-2" alt="@nation.Name">
+                                <img src="@Url.Content($"~/img/nations/{nation.img}")" class="nation-img mb-2" alt="@nation.Name">
                             }
                             else
                             {
-                                <img src="~/img/default-placeholder.png" class="club-img mb-2" alt="No Image">
+                                <img src="~/img/default-placeholder.png" class="nation-img mb-2" alt="No Image">
                             }
                             <h5 class="card-title text-center">@nation.Name</h5>
                         </div>
