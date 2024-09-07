@@ -157,29 +157,61 @@ body {
 
 /* Club Cards */
 .club-card {
-    height: 300px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    overflow: hidden;
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: transparent; /* Updated to match nation-card styling */
+    border: 1px solid var(--card-border); /* Updated to match nation-card styling */
+    border-radius: 10px; /* Consistent border-radius */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Consistent shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Consistent transition */
 }
 
     .club-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05); /* Slightly scale up the card */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhance the shadow */
     }
 
 .club-img {
-    height: 120px;
+    width: 90%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
+}
+
+
+/* Custom Club Image Styling */
+.custom-club-img {
+    height: 120px; /* Adjust as needed */
     width: auto;
     border-radius: 50%;
     object-fit: cover;
 }
+
+/* Custom Club Page Title Styling */
+.custom-club-page-title {
+    font-size: 2rem; /* Adjust as needed */
+    font-weight: 700;
+    color: #333; /* Adjust as needed */
+    margin-bottom: 0;
+}
+
+/* Nation Image Styling */
+.nation-image {
+    width: 100%;
+    height: auto;
+    max-height: 200px; /* Adjust as needed */
+    object-fit: cover;
+}
+
+/* Nation Header Styling */
+.nation-header {
+    font-size: 2rem; /* Adjust as needed */
+    font-weight: 700;
+    color: #333; /* Adjust as needed */
+    margin-bottom: 0;
+}
+
 
 /* Jersey Cards */
 .jersey-card {
@@ -420,7 +452,6 @@ body {
     padding: 0 2rem;
 }
 
-/* Home Page Specific Styles */
 .home-page-title {
     text-align: center;
     margin-bottom: 0.5rem;
@@ -429,32 +460,38 @@ body {
 .home-page-container {
     padding: 0 2rem;
 }
-/* Adjust the card's width and height */
+
+/*Nation*/
+/* Nation Card Styling */
 .nation-card {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: transparent;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Make sure images fit within their container while maintaining aspect ratio */
+    /* Hover Effect for Nation Card */
+    .nation-card:hover {
+        transform: scale(1.05); /* Slightly scale up the card */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhance the shadow */
+    }
+
+/* Nation Card Image Styling */
 .nation-img {
-    width: 100%; /* Make image width fit the card */
-    height: auto; /* Maintain aspect ratio */
-    max-height: 200px; /* Control max height of the image */
-    object-fit: cover; /* Ensure the image covers the container */
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
 }
 
-/* Optionally, you can add more styling to the card and image */
+/* Nation Card Link Styling */
 .nation-card-link {
     text-decoration: none;
     color: inherit;
 }
 
-.card {
-    border: none;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
 
-.card-title {
-    font-size: 1.1rem;
-}
