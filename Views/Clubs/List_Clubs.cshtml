@@ -1,0 +1,44 @@
+﻿@model IEnumerable<FootBallShop.Models.Clubs>
+
+@{
+    ViewData["Title"] = "Clubs List";
+}
+
+<h1>Clubs List</h1>
+
+<p>
+    <a asp-action="Create">
+        <img src="~/img/circle.png" alt="Create New Club" style="width: 50px; height: 50px;" />
+        </a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.League.LeagueName)</th>
+            <th>@Html.DisplayNameFor(model => model.img)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.League.LeagueName)</td>
+                <td>
+                    <img src="~/images/@item.img" alt="@item.Name" class="img-thumbnail" style="width: 100px;" />
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ClubId" class="btn btn-warning">
+                        <img src="~/img/pen.png" alt="Edit" style="width: 20px; height: 20px;" />
+                        </a> |
+                    <a asp-action="Delete" asp-route-id="@item.ClubId" class="btn btn-danger">
+                        <img src="~/img/bin.png" alt="Delete" style="width: 20px; height: 20px;" />
+                        </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

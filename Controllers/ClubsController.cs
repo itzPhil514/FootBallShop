@@ -32,7 +32,11 @@ namespace FootBallShop.Controllers
             var appDbContext = _context.Club.Include(c => c.League);
             return View(await appDbContext.ToListAsync());
         }
-
+        public async Task<IActionResult> List_Clubs()
+        {
+            var appDbContext = _context.Club.Include(c => c.League);
+            return View(await appDbContext.ToListAsync());
+        }
         // GET: Clubs/Details/5
         public async Task<IActionResult> Details(int? id)
         {

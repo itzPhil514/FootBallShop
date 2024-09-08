@@ -195,24 +195,6 @@ body {
     color: #333; /* Adjust as needed */
     margin-bottom: 0;
 }
-
-/* Nation Image Styling */
-.nation-image {
-    width: 100%;
-    height: auto;
-    max-height: 200px; /* Adjust as needed */
-    object-fit: cover;
-}
-
-/* Nation Header Styling */
-.nation-header {
-    font-size: 2rem; /* Adjust as needed */
-    font-weight: 700;
-    color: #333; /* Adjust as needed */
-    margin-bottom: 0;
-}
-
-
 /* Jersey Cards */
 .jersey-card {
     border: none;
@@ -492,6 +474,21 @@ body {
 .nation-card-link {
     text-decoration: none;
     color: inherit;
+}
+/* Nation Image Styling */
+.nation-image {
+    height: 120px; /* Adjust as needed */
+    width: auto;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Nation Header Styling */
+.nation-header {
+    font-size: 2rem; /* Adjust as needed */
+    font-weight: 700;
+    color: #333; /* Adjust as needed */
+    margin-bottom: 0;
 }
 
 
