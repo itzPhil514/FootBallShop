@@ -7,62 +7,86 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FootBallShop.styles.css" asp-append-version="true" />
+    <style>
+        /* Add some basic styling to the offcanvas menu */
+        .offcanvas-header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+        }
+
+        .offcanvas-body {
+            padding: 1rem;
+        }
+        /* Center the logo */
+        .navbar-brand {
+            margin: 0 auto;
+            display: block;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-light bg-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/img/logo1.png" alt="FootBallShop" style="height: 100px; width: auto;" />
-                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Leagues" asp-action="Index">Leagues</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="InterLeagues" asp-action="Index">International Leagues</a>
-                        </li>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Jerseys" asp-action="Create">Create Jerseys</a>
-                            </li>
-                            
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Clubs" asp-action="List_Clubs">Clubs</a>
-                            </li>
-                        }
-                    </ul>
-                    <form class="d-flex mx-auto">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link heart-icon-container" asp-area="" asp-controller="Wishlist" asp-action="Index">
-                                <img src="~/img/heart-15.png" alt="Wishlist" style="width: 25px; height: 25px;" />
-                                <span id="wishlist-quantity" class="wishlist-quantity-badge" style="display: none;">0</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link cart-icon-container" asp-area="" asp-controller="Cart" asp-action="Index">
-                                <img src="~/img/cart.png" alt="Cart" style="width: 25px; height: 25px;" />
-                                <span id="cart-quantity" class="cart-quantity-badge" style="display: none;">0</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            @Html.Partial("_LoginPartial")
-                        </li>
-                    </ul>
-                </div>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/img/logo1.png" alt="FootBallShop" style="height: 100px; width: auto;" />
+                </a>
+                <button class="btn btn-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link heart-icon-container" asp-area="" asp-controller="Wishlist" asp-action="Index">
+                            <img src="~/img/heart-15.png" alt="Wishlist" style="width: 25px; height: 25px;" />
+                            <span id="wishlist-quantity" class="wishlist-quantity-badge" style="display: none;">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link cart-icon-container" asp-area="" asp-controller="Cart" asp-action="Index">
+                            <img src="~/img/cart.png" alt="Cart" style="width: 25px; height: 25px;" />
+                            <span id="cart-quantity" class="cart-quantity-badge" style="display: none;">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        @Html.Partial("_LoginPartial")
+                    </li>
+                </ul>
             </div>
         </nav>
     </header>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Jerseys" asp-action="Create">Create Jerseys</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Clubs" asp-action="List_Clubs">Clubs</a>
+                    </li>
+                }
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Leagues" asp-action="Index">Leagues</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="InterLeague" asp-action="Index">International Leagues</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
 
     <div class="container">
         <main role="main" class="pb-3">
@@ -70,10 +94,8 @@
         </main>
     </div>
 
-    @Html.Partial("_Footer")
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

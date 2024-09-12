@@ -490,5 +490,35 @@ body {
     color: #333; /* Adjust as needed */
     margin-bottom: 0;
 }
+.offcanvas-header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+}
 
 
+.navbar-brand {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.offcanvas-header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+}
+
+.offcanvas-body {
+    padding: 1rem;
+}
+/* Center the logo */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar-brand {
+    flex: 1;
+    text-align: center;
+}
