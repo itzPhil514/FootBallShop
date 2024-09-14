@@ -7,24 +7,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FootBallShop.styles.css" asp-append-version="true" />
-    <style>
-        /* Add some basic styling to the offcanvas menu */
-        .offcanvas-header {
-            background-color: #333;
-            color: #fff;
-            padding: 1rem;
-        }
-
-        .offcanvas-body {
-            padding: 1rem;
-        }
-        /* Center the logo */
-        .navbar-brand {
-            margin: 0 auto;
-            display: block;
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -34,12 +16,12 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/img/logo1.png" alt="FootBallShop" style="height: 100px; width: auto;" />
-                </a>
                 <button class="btn btn-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/img/logo1.png" alt="FootBallShop" style="height: 100px; width: 100px; align-content: center" />
+                </a>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link heart-icon-container" asp-area="" asp-controller="Wishlist" asp-action="Index">
@@ -81,7 +63,7 @@
                     <a class="nav-link" asp-area="" asp-controller="Leagues" asp-action="Index">Leagues</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="InterLeague" asp-action="Index">International Leagues</a>
+                    <a class="nav-link" asp-area="" asp-controller="InterLeagues" asp-action="Index">International Leagues</a>
                 </li>
             </ul>
         </div>
@@ -93,6 +75,8 @@
             @RenderBody()
         </main>
     </div>
+
+    @Html.Partial("_Footer")
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

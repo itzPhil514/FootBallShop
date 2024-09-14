@@ -499,9 +499,9 @@ body {
 
 .navbar-brand {
     margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
+    text-align: center;
+    width: 100%;
 }
 .offcanvas-header {
     background-color: #333;
@@ -511,14 +511,13 @@ body {
 
 .offcanvas-body {
     padding: 1rem;
+    text-align: center;
 }
 /* Center the logo */
 .navbar {
     display: flex;
     justify-content: space-between;
 }
-
-.navbar-brand {
-    flex: 1;
-    text-align: center;
+.navbar-nav {
+    justify-content: center; /* add this to center the navigation links */
 }
