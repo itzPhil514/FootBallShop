@@ -518,7 +518,7 @@ body {
         flex-direction: column;
         align-items: center;
         position: absolute;
-        top: 20%;
+        top: 2%;
     }
 
     .offcanvas-body .nav-item {
@@ -535,11 +535,11 @@ body {
     }
 
         .offcanvas-body .nav-link:hover {
-            background-color: #f0f0f0; /* Light gray background on hover */
+            background-color: #f0f0f0;
             border: 1px solid #ddd;
             border-radius: 5px;
             padding: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
 /* Center the logo */

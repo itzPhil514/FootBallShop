@@ -132,7 +132,7 @@ namespace FootBallShop.Controllers
             // Check if the user is in the Admin role
             if (!User.Identity.IsAuthenticated || !await _userManager.IsInRoleAsync(await _userManager.GetUserAsync(User), "Admin"))
             {
-                return RedirectToAction("AccessDenied", "Account"); // Redirect to an access denied page
+                return RedirectToAction("AccessDenied", "Account");
             }
 
             ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName", clubs.LeagueId);
@@ -144,39 +144,37 @@ namespace FootBallShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ClubId,Name,LeagueId,img")] Clubs clubs)
         {
-            if (id != clubs.ClubId)
+            if (HttpContext.Request.Form.Files.Count > 0)
             {
-                return NotFound();
+                var file = HttpContext.Request.Form.Files[0];
+
+                if (file.Length > 0)
+                {
+                    var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fileExtension = Path.GetExtension(originalFileName);
+                    var uniqueFileName = originalFileName;
+
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img/clubs");
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+
+                    clubs.img = uniqueFileName;
+                }
             }
 
-            // Check if the user is in the Admin role
-            if (!User.Identity.IsAuthenticated || !await _userManager.IsInRoleAsync(await _userManager.GetUserAsync(User), "Admin"))
-            {
-                return RedirectToAction("AccessDenied", "Account"); // Redirect to an access denied page
-            }
+            _context.Club.Update(clubs);
+            await _context.SaveChangesAsync();
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(clubs);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClubsExists(clubs.ClubId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName", clubs.LeagueId);
-            return View(clubs);
+            return RedirectToAction("Index");
         }
 
         // GET: Clubs/Delete/5
