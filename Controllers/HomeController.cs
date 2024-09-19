@@ -13,6 +13,26 @@ namespace FootBallShop.Controllers
         {
             _context = context;
         }
+        [HttpGet]
+        public JsonResult SearchAjax(string query)
+        {
+            if (string.IsNullOrEmpty(query))
+            {
+                return Json(new List<Jerseys>());
+            }
+
+            var searchResults = _context.Jersey
+                                 .Include(j => j.Club)
+                                 .Where(j => j.Name.Contains(query))
+                                 .Select(j => new {
+                                     j.Name,
+                                     j.img
+                                 })
+                                 .Take(5)
+                                 .ToList();
+
+            return Json(searchResults);
+        }
 
         public IActionResult Index()
         {

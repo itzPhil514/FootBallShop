@@ -22,6 +22,13 @@
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/img/logo1.png" alt="FootBallShop" style="height: 100px; width: 100px; align-content: center" />
                 </a>
+                <form class="d-flex ms-auto" id="search-form" autocomplete="off">
+                    <div id="search-container">
+                        <input class="form-control me-2" type="search" id="search-query" placeholder="Search" aria-label="Search">
+                        <div id="search-results" class="dropdown-menu"></div>
+                    </div>
+                    <button class="btn btn-outline-success" type="button">Search</button>
+                </form>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link heart-icon-container" asp-area="" asp-controller="Wishlist" asp-action="Index">
@@ -81,6 +88,45 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            $('#search-query').on('keyup', function () {
+                var query = $(this).val();
+
+                if (query.length > 2) {
+                    $.ajax({
+                        url: '@Url.Action("SearchAjax", "Home")',
+                        type: 'GET',
+                        data: { query: query },
+                        success: function (data) {
+                            $('#search-results').empty();
+                            if (data.length > 0) {
+                                $('#search-results').show();
+                                $.each(data, function (index, item) {
+                                    $('#search-results').append(
+                                        `<a href="#" class="dropdown-item">
+                                                <img src="/img/jerseys/${item.img}" style="width: 70px; height: 70px; margin-right: 10px;">
+                                                ${item.name}
+                                            </a>`
+                                    );
+                                });
+                            } else {
+                                $('#search-results').hide();
+                            }
+                        },
+                    });
+                } else {
+                    $('#search-results').hide();
+                }
+            });
+            $(document).click(function (e) {
+                if (!$(e.target).closest('#search-form').length) {
+                    $('#search-results').hide();
+                }
+            });
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -547,3 +547,37 @@ body {
     display: flex;
     justify-content: space-between;
 }
+/* Container to position the dropdown relative to the search bar */
+#search-container {
+    position: relative;
+    display: inline-block;
+}
+
+#search-results {
+    position: absolute;
+    top: 100%; 
+    left: 0; 
+    z-index: 1000;
+    width: 270%; 
+    background-color: #fff; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+    border: 1px solid #ddd; 
+    border-radius: 4px; 
+    max-height: 300px; 
+    overflow-y: auto;
+    display: none;
+}
+
+    #search-results .dropdown-item {
+        display: flex;
+        align-items: center;
+        padding: 5px 10px;
+        text-decoration: none; 
+        color: #333;
+    }
+
+        #search-results .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
+
