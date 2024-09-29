@@ -42,5 +42,7 @@ namespace FootBallShop.Models
 
         public string img { get; set; }
         public bool IsInter { get; set; }
+
+        public string Category { get; set; }
     }
 }

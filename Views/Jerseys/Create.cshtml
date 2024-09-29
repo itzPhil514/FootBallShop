@@ -75,6 +75,19 @@
                     </div>
                 </div>
 
+                <!-- Category Dropdown -->
+                <div class="form-group">
+                    <label asp-for="Category" class="control-label">Category</label>
+                    <select asp-for="Category" class="form-control">
+                        <option value="">Select Category</option>
+                        <option value="Jersey">Jersey</option>
+                        <option value="Training Kit">Training Kit</option>
+                        <option value="Goalkeeper Kit">Goalkeeper Kit</option>
+                        <option value="Warm-up Kit">Warm-up Kit</option>
+                    </select>
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+
                 <!-- InterLeague and Nation Dropdowns -->
                 <div id="international-jersey-fields" style="display:none;">
                     <div class="form-group">
