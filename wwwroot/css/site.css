@@ -201,383 +201,406 @@ body {
     border-radius: 0.5rem;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%; 
+    max-width: 350px;
+    margin: 0 auto;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 90%; /* Reduce the card width */
-    margin: 0 auto; /* Center the card */
 }
 
     .jersey-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     }
-
 .jersey-card-img-top, .home-jersey-card-img-top {
     width: 100%;
-    height: 350px; 
-    object-fit: contain; 
+    height: auto; 
+    object-fit: contain;
 }
-
-.jersey-card-body, .home-jersey-card-body {
-    padding: 0.75rem; 
-    background-color: #fff;
-}
-
-.jersey-card-title, .home-jersey-card-title {
-    font-size: 1.15rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: #333;
-}
-
-.jersey-card-text, .home-jersey-card-text {
-    font-size: 0.95rem;
-    color: #666;
-}
-
-
-/* Page Titles */
-.page-title, .club-page-title, .home-page-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 0;
-}
-
-/* Root Variables */
-:root {
-    --card-bg: #ffffff;
-    --card-border: #ddd;
-    --text-color: #000000;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --card-bg: #2c2c2c;
-        --card-border: #444;
-        --text-color: #ffffff;
+@media (min-width: 576px) {
+    .jersey-card {
+        max-width: 320px;
     }
 }
 
-/* Detail Page */
-.detail-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.image-wrapper {
-    border-radius: 0.5rem;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 1.5rem;
-}
-
-.detail-img {
-    width: 90%;
-    height: auto;
-    object-fit: cover;
-}
-
-.detail-info {
-    background-color: #f9f9f9;
-    border-radius: 0.5rem;
-    padding: 1.5rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.detail-title {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
-}
-
-.detail-text {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-}
-
-/* Form Controls */
-.detail-form {
-    margin-top: 1.5rem;
-}
-
-.quantity-control .btn {
-    border-radius: 0;
-}
-
-.quantity-control input {
-    max-width: 80px;
-}
-
-.wishlist-form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.wishlist-icon {
-    width: 24px;
-    height: 24px;
-    vertical-align: middle;
-}
-
-/* Button Styles */
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    border-radius: 0.25rem;
-}
-
-.btn-outline-secondary {
-    border-color: #6c757d;
-    color: #6c757d;
-    border-radius: 0.25rem;
-}
-
-    .btn-outline-secondary:hover {
-        background-color: #6c757d;
-        color: #fff;
-    }
-
-/* Quantity Input */
-#quantity {
-    -moz-appearance: textfield;
-    appearance: textfield;
-}
-
-    #quantity::-webkit-inner-spin-button,
-    #quantity::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-/* Detail Page Variables */
-:root {
-    --detail-card-bg: #ffffff;
-    --detail-card-border: #ddd;
-    --detail-text-color: #000000;
-    --form-bg: #f8f9fa;
-    --form-border: #ced4da;
-    --btn-bg: #007bff;
-    --btn-hover-bg: #0056b3;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --detail-card-bg: #2c2c2c;
-        --detail-card-border: #444;
-        --detail-text-color: #ffffff;
-        --form-bg: #3a3a3a;
-        --form-border: #555;
-        --btn-bg: #007bff;
-        --btn-hover-bg: #0056b3;
+@media (min-width: 768px) {
+    .jersey-card {
+        max-width: 340px;
     }
 }
 
-/* Table Styling */
-.table img {
-    border-radius: 5px;
-}
-
-.table td {
-    vertical-align: middle;
-}
-
-/* League and Continent Cards */
-.league-img, .continent-img {
-    max-height: 120px;
-    object-fit: cover;
-}
-
-.league-card, .continent-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    text-align: center;
-    border-radius: 10px;
-    transition: transform 0.3s ease-in-out;
-}
-
-    .league-card:hover, .continent-card:hover {
-        transform: translateY(-5px);
+@media (min-width: 992px) {
+    .jersey-card {
+        max-width: 380px;
     }
 
-/* Home Jersey Cards */
-.home-jersey-card {
-    border: none;
-    border-radius: 0.5rem;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-    .home-jersey-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    .jersey-card-body, .home-jersey-card-body {
+        padding: 0.75rem;
+        background-color: #fff;
     }
 
-.home-jersey-card-img-top {
-    width: 100%;
-    height: 350px;
-    object-fit: cover;
-}
-
-/* Club Container and Page Titles */
-.club-page-title {
-    text-align: center;
-    margin-bottom: 0.5rem;
-}
-
-.club-jerseys-container {
-    padding: 0 2rem;
-}
-
-.home-page-title {
-    text-align: center;
-    margin-bottom: 0.5rem;
-}
-
-.home-page-container {
-    padding: 0 2rem;
-}
-
-/*Nation*/
-/* Nation Card Styling */
-.nation-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: transparent;
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Hover Effect for Nation Card */
-.nation-card:hover {
-    transform: scale(1.05); /* Slightly scale up the card */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhance the shadow */
-}
-
-/* Nation Card Image Styling */
-.nation-img {
-    width: 100%;
-    height: auto;
-    max-height: 200px;
-    object-fit: cover;
-}
-
-/* Nation Card Link Styling */
-.nation-card-link {
-    text-decoration: none;
-    color: inherit;
-}
-/* Nation Image Styling */
-.nation-image {
-    height: 120px; /* Adjust as needed */
-    width: auto;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-/* Nation Header Styling */
-.nation-header {
-    font-size: 2rem; /* Adjust as needed */
-    font-weight: 700;
-    color: #333; /* Adjust as needed */
-    margin-bottom: 0;
-}
-.offcanvas-header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem;
-}
-
-
-.navbar-brand {
-    margin: 0 auto;
-    display: block;
-    text-align: center;
-    width: 100%;
-}
-.offcanvas-body {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%; /* Full height for the off-canvas body */
-    padding-top: 0; /* Reset padding */
-}
-
-    .offcanvas-body .navbar-nav {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: absolute;
-        top: 2%;
-    }
-
-    .offcanvas-body .nav-item {
-        width: 100%;
-        text-align: center;
-    }
-
-    .offcanvas-body .nav-link {
-        display: block;
-        width: 100%;
-        padding: 10px 0;
-        text-align: center;
-        transition: all 0.3s ease;
-    }
-
-        .offcanvas-body .nav-link:hover {
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-/* Center the logo */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-}
-/* Container to position the dropdown relative to the search bar */
-#search-container {
-    position: relative;
-    display: inline-block;
-}
-
-#search-results {
-    position: absolute;
-    top: 100%; 
-    left: 0; 
-    z-index: 1000;
-    width: 270%; 
-    background-color: #fff; 
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
-    border: 1px solid #ddd; 
-    border-radius: 4px; 
-    max-height: 300px; 
-    overflow-y: auto;
-    display: none;
-}
-
-    #search-results .dropdown-item {
-        display: flex;
-        align-items: center;
-        padding: 5px 10px;
-        text-decoration: none; 
+    .jersey-card-title, .home-jersey-card-title {
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
         color: #333;
     }
 
-        #search-results .dropdown-item:hover {
-            background-color: #f8f9fa;
+    .jersey-card-text, .home-jersey-card-text {
+        font-size: 0.95rem;
+        color: #666;
+    }
+
+
+    /* Page Titles */
+    .page-title, .club-page-title, .home-page-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 0;
+    }
+
+    /* Root Variables */
+    :root {
+        --card-bg: #ffffff;
+        --card-border: #ddd;
+        --text-color: #000000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --card-bg: #2c2c2c;
+            --card-border: #444;
+            --text-color: #ffffff;
         }
+    }
+
+    /* Detail Page */
+    .detail-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .image-wrapper {
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1.5rem;
+    }
+
+    .detail-img {
+        width: 90%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .detail-info {
+        background-color: #f9f9f9;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .detail-title {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .detail-text {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Form Controls */
+    .detail-form {
+        margin-top: 1.5rem;
+    }
+
+    .quantity-control .btn {
+        border-radius: 0;
+    }
+
+    .quantity-control input {
+        max-width: 80px;
+    }
+
+    .wishlist-form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .wishlist-icon {
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+    }
+
+    /* Button Styles */
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        border-radius: 0.25rem;
+    }
+
+    .btn-outline-secondary {
+        border-color: #6c757d;
+        color: #6c757d;
+        border-radius: 0.25rem;
+    }
+
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+    /* Quantity Input */
+    #quantity {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+
+        #quantity::-webkit-inner-spin-button,
+        #quantity::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+    /* Detail Page Variables */
+    :root {
+        --detail-card-bg: #ffffff;
+        --detail-card-border: #ddd;
+        --detail-text-color: #000000;
+        --form-bg: #f8f9fa;
+        --form-border: #ced4da;
+        --btn-bg: #007bff;
+        --btn-hover-bg: #0056b3;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --detail-card-bg: #2c2c2c;
+            --detail-card-border: #444;
+            --detail-text-color: #ffffff;
+            --form-bg: #3a3a3a;
+            --form-border: #555;
+            --btn-bg: #007bff;
+            --btn-hover-bg: #0056b3;
+        }
+    }
+
+    /* Table Styling */
+    .table img {
+        border-radius: 5px;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    /* League and Continent Cards */
+    .league-img, .continent-img {
+        max-height: 120px;
+        object-fit: cover;
+    }
+
+    .league-card, .continent-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        text-align: center;
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .league-card:hover, .continent-card:hover {
+            transform: translateY(-5px);
+        }
+
+    /* Home Jersey Cards */
+    .home-jersey-card {
+        border: none;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .home-jersey-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+    .home-jersey-card-img-top {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+    }
+
+    /* Club Container and Page Titles */
+    .club-page-title {
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .club-jerseys-container {
+        padding: 0 2rem;
+    }
+
+    .home-page-title {
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .home-page-container {
+        padding: 0 2rem;
+    }
+
+    /*Nation*/
+    /* Nation Card Styling */
+    .nation-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: transparent;
+        border: 1px solid var(--card-border);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        /* Hover Effect for Nation Card */
+        .nation-card:hover {
+            transform: scale(1.05); /* Slightly scale up the card */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhance the shadow */
+        }
+
+    /* Nation Card Image Styling */
+    .nation-img {
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+        object-fit: cover;
+    }
+
+    /* Nation Card Link Styling */
+    .nation-card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+    /* Nation Image Styling */
+    .nation-image {
+        height: 120px; /* Adjust as needed */
+        width: auto;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    /* Nation Header Styling */
+    .nation-header {
+        font-size: 2rem; /* Adjust as needed */
+        font-weight: 700;
+        color: #333; /* Adjust as needed */
+        margin-bottom: 0;
+    }
+
+    .offcanvas-header {
+        background-color: #333;
+        color: #fff;
+        padding: 1rem;
+    }
+
+
+    .navbar-brand {
+        margin: 0 auto;
+        display: block;
+        text-align: center;
+        width: 100%;
+        max-width: 150px; /* Adjusted for larger logo size */
+        transition: transform 0.3s ease;
+        height: auto; /* Ensure it scales proportionally */
+    }
+
+    .offcanvas-body {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%; /* Full height for the off-canvas body */
+        padding-top: 0; /* Reset padding */
+    }
+
+        .offcanvas-body .navbar-nav {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            top: 2%;
+        }
+
+        .offcanvas-body .nav-item {
+            width: 100%;
+            text-align: center;
+        }
+
+        .offcanvas-body .nav-link {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+            .offcanvas-body .nav-link:hover {
+                background-color: #f0f0f0;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+    /* Center the logo */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+    }
+    /* Container to position the dropdown relative to the search bar */
+    #search-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    #search-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        width: 270%;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        max-height: 300px;
+        overflow-y: auto;
+        display: none;
+    }
+
+        #search-results .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+            #search-results .dropdown-item:hover {
+                background-color: #f8f9fa;
+            }
+
+}
 
 
