@@ -519,9 +519,6 @@ body {
         display: block;
         text-align: center;
         width: 100%;
-        max-width: 150px; /* Adjusted for larger logo size */
-        transition: transform 0.3s ease;
-        height: auto; /* Ensure it scales proportionally */
     }
 
     .offcanvas-body {
