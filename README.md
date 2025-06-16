@@ -56,6 +56,17 @@
 
 ## 📸 Screenshot Highlights
 
-> ![Home Page](https://i.imgur.com/BAVNbXy.png)
+# Home Page:
+![Home Page](https://i.imgur.com/BAVNbXy.png)
+
+# Quick Menu (user):
+![Quick Menu](https://i.imgur.com/SKSguRx.png)
+
+# Login/Sign up:
+![Login](https://i.imgur.com/lIBgucw.png)
+![Sign up](https://i.imgur.com/J7r5fkP.png)
+
+
+
 
 ---
