@@ -56,6 +56,6 @@
 
 ## 📸 Screenshot Highlights
 
-> [https://imgur.com/BAVNbXy]
+> ![Home Page](https://imgur.com/BAVNbXy)
 
 ---
