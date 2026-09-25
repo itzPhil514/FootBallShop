@@ -57,16 +57,20 @@
 ## 📸 Screenshot Highlights
 
 # Home Page:
-![Home Page](https://i.imgur.com/BAVNbXy.png)
+## Dark Mode
+![Home Page](https://imgur.com/rVY5C9C.png)
+## Light Mode
+![Home Page](https://imgur.com/3wrVVYM.png)
 
 # Quick Menu (user):
-![Quick Menu](https://i.imgur.com/SKSguRx.png)
+![Quick Menu](https://imgur.com/4SoJOQb.png)
 
 # Login/Sign up:
-![Login](https://i.imgur.com/lIBgucw.png)
-![Sign up](https://i.imgur.com/J7r5fkP.png)
+![Login](https://imgur.com/qo3oExf.png)
+![Sign up](https://imgur.com/4qz4TnV.png)
 
-
+# Search Bar
+![Search Bar](https://imgur.com/kwsW1XM.png)
 
 
 ---
