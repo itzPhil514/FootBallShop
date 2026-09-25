@@ -49,8 +49,8 @@
 - Login and user authentication
 - Filtering and sorting of products
 - Multilingual support
-- Wishlist and shopping cart
-- Dark mode/Light mode
+- ~~Wishlist and shopping cart~~
+- ~~Dark mode/Light mode~~
 
 ---
 
