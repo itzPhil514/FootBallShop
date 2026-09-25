@@ -1,36 +1,24 @@
 ﻿@model FootBallShop.Models.Nations
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Nation Details"; Layout = "_Layout";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Nations</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InterLeagues)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InterLeagues.interLeaguesName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.img)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.img)
-        </dd>
-    </dl>
+<div class="fbs-section-header">
+    <h2 class="page-title">Nation Details</h2>
+    <div class="fbs-title-bar"></div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.NationId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="fbs-admin-card">
+    <dl class="fbs-dl">
+        <dt>Name</dt>
+        <dd>@Model.Name</dd>
+        <dt>League</dt>
+        <dd>@Model.InterLeagues?.interLeaguesName</dd>
+        <dt>Flag</dt>
+        <dd><img src="@Url.Content($"~/img/nations/{Model.img}")" style="width:80px;height:80px;object-fit:contain;" /></dd>
+    </dl>
+    <div class="d-flex gap-2 mt-4">
+        <a asp-action="Edit" asp-route-id="@Model.NationId" class="btn btn-primary">Edit</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+    </div>
 </div>

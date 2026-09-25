@@ -1,28 +1,38 @@
 ﻿@model List<Jerseys>
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="home-page-container">
-    <div class="text-center">
-        <h2 class="home-page-title">FootBall Kits</h2>
-        <div class="row">
-            @foreach (var jersey in Model)
-            {
-                <div class="col-md-3 mb-4">
-                    <a asp-action="Details" asp-controller="Jerseys" asp-route-id="@jersey.JerseysId" class="home-jersey-card-link">
-                        <div class="home-jersey-card h-100">
-                            <img class="home-jersey-card-img-top" src="@Url.Content($"~/img/jerseys/{jersey.img}")" alt="@jersey.Name" />
-                            <div class="home-jersey-card-body">
-                                <h5 class="home-jersey-card-title">@jersey.Name</h5>
-                                <p class="home-jersey-card-text">
-                                    <strong>Price:</strong> $@jersey.Price
-                                </p>
-                            </div>
-                        </div>
-                    </a>
+<div class="fbs-hero">
+    <p class="fbs-hero-eyebrow">New Season — Now Available</p>
+    <h1 class="fbs-hero-title">Wear Your<br><span style="color:var(--red);">Club</span></h1>
+    <p class="fbs-hero-sub">Official kits from every league, every nation, every season.</p>
+    <a asp-controller="Leagues" asp-action="Index" class="btn btn-primary fbs-hero-btn me-2">Shop Clubs</a>
+    <a asp-controller="InterLeagues" asp-action="Index" class="btn btn-outline-light fbs-hero-btn">National Teams</a>
+</div>
+
+<div class="fbs-section-header">
+    <h2 class="page-title">Latest Kits</h2>
+    <div class="fbs-title-bar"></div>
+</div>
+
+<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+    @foreach (var jersey in Model)
+    {
+        <div class="col">
+            <a asp-action="Details" asp-controller="Jerseys" asp-route-id="@jersey.JerseysId">
+                <div class="fbs-jersey-wrap h-100">
+                    <div class="fbs-jersey-img-wrap">
+                        <img class="fbs-jersey-card-img"
+                             src="@Url.Content($"~/img/jerseys/{jersey.img}")"
+                             alt="@jersey.Name" />
+                    </div>
+                    <div class="fbs-jersey-card-body">
+                        <p class="fbs-jersey-card-title">@jersey.Name</p>
+                        <p class="fbs-jersey-card-price">$@jersey.Price</p>
+                    </div>
                 </div>
-            }
+            </a>
         </div>
-    </div>
+    }
 </div>

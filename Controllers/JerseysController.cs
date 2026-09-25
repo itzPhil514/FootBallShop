@@ -1,4 +1,5 @@
 ﻿using FootBallShop.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,212 +19,211 @@ namespace FootBallShop.Controllers
         }
 
         // GET: Jerseys
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Jersey.Include(j => j.Club).Include(j => j.League);
-            return View(await appDbContext.ToListAsync());
+            var jerseys = await _context.Jersey
+                .Include(j => j.Club).Include(j => j.League)
+                .Include(j => j.Nation).Include(j => j.InterLeague)
+                .ToListAsync();
+            return View(jerseys);
         }
 
         // GET: Jerseys/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var jerseys = await _context.Jersey
-                .Include(j => j.Club)
-                .Include(j => j.League)
+            var jersey = await _context.Jersey
+                .Include(j => j.Club).Include(j => j.League)
+                .Include(j => j.Nation).Include(j => j.InterLeague)
                 .FirstOrDefaultAsync(m => m.JerseysId == id);
-            if (jerseys == null)
-            {
-                return NotFound();
-            }
 
-            return View(jerseys);
+            if (jersey == null) return NotFound();
+            return View(jersey);
         }
 
         // GET: Jerseys/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
-
         // POST: Jerseys/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Jerseys jerseys)
         {
+            // Handle image upload
             if (HttpContext.Request.Form.Files.Count > 0)
             {
                 var file = HttpContext.Request.Form.Files[0];
-
                 if (file.Length > 0)
                 {
-                    var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var fileExtension = Path.GetExtension(originalFileName);
-                    var uniqueFileName = originalFileName;
-
+                    var originalFileName = ContentDispositionHeaderValue
+                        .Parse(file.ContentDisposition).FileName.Trim('"');
                     var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img/jerseys");
-                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    if (!Directory.Exists(uploadsFolder))
-                    {
-                        Directory.CreateDirectory(uploadsFolder);
-                    }
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await file.CopyToAsync(fileStream);
-                    }
-
-                    jerseys.img = uniqueFileName; // Assign the unique filename to the img property
+                    Directory.CreateDirectory(uploadsFolder);
+                    var filePath = Path.Combine(uploadsFolder, originalFileName);
+                    using var fs = new FileStream(filePath, FileMode.Create);
+                    await file.CopyToAsync(fs);
+                    jerseys.img = originalFileName;
                 }
             }
+
+            // Clear irrelevant FK errors based on IsInter flag
+            if (jerseys.IsInter)
+            {
+                ModelState.Remove("LeagueId");
+                ModelState.Remove("ClubId");
+                jerseys.LeagueId = null;
+                jerseys.ClubId = null;
+            }
+            else
+            {
+                ModelState.Remove("interLeaguesId");
+                ModelState.Remove("NationId");
+                jerseys.interLeaguesId = null;
+                jerseys.NationId = null;
+            }
+
+            ModelState.Remove("img");
+            ModelState.Remove("Club");
+            ModelState.Remove("League");
+            ModelState.Remove("Nation");
+            ModelState.Remove("InterLeague");
+            ModelState.Remove("Size");
 
             _context.Jersey.Add(jerseys);
             await _context.SaveChangesAsync();
-
-            return RedirectToAction("Index");
+            TempData["Success"] = $"Jersey \"{jerseys.Name}\" created successfully.";
+            return RedirectToAction("Index", "Admin");
         }
-
-        // GET: Jerseys/GetTeamsByLeague
-        public IActionResult GetTeamsByLeague(int leagueId)
-        {
-            var teams = _context.Club
-                .Where(t => t.LeagueId == leagueId)
-                .Select(t => new { teamId = t.ClubId, teamName = t.Name })
-                .ToList();
-
-            return Json(teams);
-        }
-
-
 
         // GET: Jerseys/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var jerseys = await _context.Jersey.FindAsync(id);
-            if (jerseys == null)
-            {
-                return NotFound();
-            }
-            ViewData["ClubId"] = new SelectList(_context.Club, "ClubId", "Name", jerseys.ClubId);
-            ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName", jerseys.LeagueId);
-            return View(jerseys);
+            var jersey = await _context.Jersey.FindAsync(id);
+            if (jersey == null) return NotFound();
+
+            ViewData["ClubId"] = new SelectList(_context.Club, "ClubId", "Name", jersey.ClubId);
+            ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName", jersey.LeagueId);
+            ViewData["NationId"] = new SelectList(_context.Nation, "NationId", "Name", jersey.NationId);
+            ViewData["interLeaguesId"] = new SelectList(_context.InterLeague, "interLeaguesId", "interLeaguesName", jersey.interLeaguesId);
+            return View(jersey);
         }
 
         // POST: Jerseys/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("JerseysId,Name,Size,Price,LeagueId,TeamId,img")] Jerseys jerseys)
+        public async Task<IActionResult> Edit(int id, [Bind("JerseysId,Name,Price,LeagueId,ClubId,NationId,interLeaguesId,IsInter,Category,img")] Jerseys jerseys)
         {
-            if (id != jerseys.JerseysId)
+            if (id != jerseys.JerseysId) return NotFound();
+
+            // Handle image upload — keep existing if no new file
+            if (HttpContext.Request.Form.Files.Count > 0)
             {
-                return NotFound();
+                var file = HttpContext.Request.Form.Files[0];
+                if (file.Length > 0)
+                {
+                    var originalFileName = ContentDispositionHeaderValue
+                        .Parse(file.ContentDisposition).FileName.Trim('"');
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "img/jerseys");
+                    Directory.CreateDirectory(uploadsFolder);
+                    var filePath = Path.Combine(uploadsFolder, originalFileName);
+                    using var fs = new FileStream(filePath, FileMode.Create);
+                    await file.CopyToAsync(fs);
+                    jerseys.img = originalFileName;
+                }
             }
 
-            if (ModelState.IsValid)
+            ModelState.Remove("img");
+            ModelState.Remove("Club");
+            ModelState.Remove("League");
+            ModelState.Remove("Nation");
+            ModelState.Remove("InterLeague");
+            ModelState.Remove("Size");
+
+            if (jerseys.IsInter)
             {
-                try
-                {
-                    _context.Update(jerseys);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!JerseysExists(jerseys.JerseysId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ModelState.Remove("LeagueId");
+                ModelState.Remove("ClubId");
+                jerseys.LeagueId = null;
+                jerseys.ClubId = null;
             }
-            ViewData["ClubId"] = new SelectList(_context.Club, "ClubId", "Name", jerseys.ClubId);
-            ViewData["LeagueId"] = new SelectList(_context.League, "LeagueId", "LeagueName", jerseys.LeagueId);
-            return View(jerseys);
+            else
+            {
+                ModelState.Remove("interLeaguesId");
+                ModelState.Remove("NationId");
+                jerseys.interLeaguesId = null;
+                jerseys.NationId = null;
+            }
+
+            try
+            {
+                _context.Update(jerseys);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = $"Jersey \"{jerseys.Name}\" updated successfully.";
+                return RedirectToAction("Jerseys", "Admin");
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Jersey.Any(e => e.JerseysId == jerseys.JerseysId))
+                    return NotFound();
+                throw;
+            }
         }
 
         // GET: Jerseys/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var jerseys = await _context.Jersey
-                .Include(j => j.Club)
-                .Include(j => j.League)
+            if (id == null) return NotFound();
+            var jersey = await _context.Jersey
+                .Include(j => j.Club).Include(j => j.League)
+                .Include(j => j.Nation).Include(j => j.InterLeague)
                 .FirstOrDefaultAsync(m => m.JerseysId == id);
-            if (jerseys == null)
-            {
-                return NotFound();
-            }
-
-            return View(jerseys);
+            if (jersey == null) return NotFound();
+            return View(jersey);
         }
 
         // POST: Jerseys/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var jerseys = await _context.Jersey.FindAsync(id);
-            if (jerseys != null)
+            var jersey = await _context.Jersey.FindAsync(id);
+            if (jersey != null)
             {
-                _context.Jersey.Remove(jerseys);
+                _context.Jersey.Remove(jersey);
+                await _context.SaveChangesAsync();
+                TempData["Success"] = $"Jersey deleted.";
             }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Jerseys", "Admin");
         }
 
-        private bool JerseysExists(int id)
-        {
-            return _context.Jersey.Any(e => e.JerseysId == id);
-        }
+        // AJAX endpoints
         [HttpGet]
         public JsonResult GetInternationalLeaguesAndNations()
         {
             var interLeagues = _context.InterLeague
-                .Select(il => new { value = il.interLeaguesId, text = il.interLeaguesName })
-                .ToList();
-
-            var nations = _context.Nation
-                .Select(n => new { value = n.NationId, text = n.Name })
-                .ToList();
-
-            return Json(new { interLeagues, nations });
+                .Select(il => new { value = il.interLeaguesId, text = il.interLeaguesName }).ToList();
+            return Json(new { interLeagues });
         }
 
         [HttpGet]
         public JsonResult GetRegularLeaguesAndClubs()
         {
             var leagues = _context.League
-                .Select(l => new { value = l.LeagueId, text = l.LeagueName })
-                .ToList();
-
-            var clubs = _context.Club
-                .Select(c => new { value = c.ClubId, text = c.Name })
-                .ToList();
-
-            return Json(new { leagues, clubs });
+                .Select(l => new { value = l.LeagueId, text = l.LeagueName }).ToList();
+            return Json(new { leagues });
         }
 
         [HttpGet]
@@ -231,9 +231,7 @@ namespace FootBallShop.Controllers
         {
             var clubs = _context.Club
                 .Where(c => c.LeagueId == leagueId)
-                .Select(c => new { value = c.ClubId, text = c.Name })
-                .ToList();
-
+                .Select(c => new { value = c.ClubId, text = c.Name }).ToList();
             return Json(new { clubs });
         }
 
@@ -242,10 +240,17 @@ namespace FootBallShop.Controllers
         {
             var nations = _context.Nation
                 .Where(n => n.interLeaguesId == interLeagueId)
-                .Select(n => new { value = n.NationId, text = n.Name })
-                .ToList();
-
+                .Select(n => new { value = n.NationId, text = n.Name }).ToList();
             return Json(new { nations });
+        }
+
+        [HttpGet]
+        public JsonResult GetTeamsByLeague(int leagueId)
+        {
+            var teams = _context.Club
+                .Where(t => t.LeagueId == leagueId)
+                .Select(t => new { teamId = t.ClubId, teamName = t.Name }).ToList();
+            return Json(teams);
         }
     }
 }

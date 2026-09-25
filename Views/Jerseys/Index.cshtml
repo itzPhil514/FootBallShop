@@ -1,63 +1,50 @@
 ﻿@model IEnumerable<FootBallShop.Models.Jerseys>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Jerseys"; Layout = "_Layout";
 }
 
-<h1>Jerseys List</h1>
+<div class="fbs-section-header">
+    <h2 class="page-title">Jerseys</h2>
+    <div class="fbs-title-bar"></div>
+    <a asp-action="Create" class="btn btn-primary btn-sm flex-shrink-0">
+        <i class="fas fa-plus me-1"></i> New Jersey
+    </a>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New Jersey</a>
-</p>
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Name)</th>
-            <th>@Html.DisplayNameFor(model => model.Size)</th>
-            <th>@Html.DisplayNameFor(model => model.Price)</th>
-            <th>League/InterLeague</th>
-            <th>Club/Nation</th>
-            <th>@Html.DisplayNameFor(model => model.img)</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.Size)</td>
-                <td>@Html.DisplayFor(modelItem => item.Price)</td>
-                <td>
-                    @if (item.IsInter)
-                    {
-                        @Html.DisplayFor(modelItem => item.InterLeague.interLeaguesName)
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(modelItem => item.League.LeagueName)
-                    }
-                </td>
-                <td>
-                    @if (item.IsInter)
-                    {
-                        @Html.DisplayFor(modelItem => item.Nation.Name)
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(modelItem => item.Club.Name)
-                    }
-                </td>
-                <td>
-                    <img src="~/images/@item.img" alt="@item.Name" class="img-thumbnail" style="width: 100px;" />
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.JerseysId" class="btn btn-warning">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.JerseysId" class="btn btn-info">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.JerseysId" class="btn btn-danger">Delete</a>
-                </td>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>League / Int'l</th>
+                <th>Club / Nation</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><img src="@Url.Content($"~/img/jerseys/{item.img}")" style="width:60px;height:60px;object-fit:contain;" /></td>
+                    <td>@item.Name</td>
+                    <td>$@item.Price</td>
+                    <td>@(item.IsInter ? item.InterLeague?.interLeaguesName : item.League?.LeagueName)</td>
+                    <td>@(item.IsInter ? item.Nation?.Name : item.Club?.Name)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.JerseysId" class="btn btn-warning btn-sm">
+                            <i class="fas fa-pen"></i>
+                        </a>
+                        <a asp-action="Details" asp-route-id="@item.JerseysId" class="btn btn-outline-secondary btn-sm ms-1">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.JerseysId" class="btn btn-danger btn-sm ms-1">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

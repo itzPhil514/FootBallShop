@@ -1,0 +1,171 @@
+@model FootBallShop.Controllers.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["AdminActive"] = "dashboard";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-page-head">
+    <div>
+        <p class="admin-kicker">Store overview</p>
+        <h1 class="admin-page-title">Dashboard</h1>
+        <p class="admin-page-subtitle">Manage your football shop from one place.</p>
+    </div>
+    <div class="admin-head-actions">
+        <a asp-controller="Home" asp-action="Index" class="admin-btn admin-btn-soft">
+            <i class="fas fa-store"></i> View store
+        </a>
+        <a asp-controller="Jerseys" asp-action="Create" class="admin-btn admin-btn-primary">
+            <i class="fas fa-plus"></i> Add jersey
+        </a>
+    </div>
+</div>
+
+<section class="admin-stats" aria-label="Store statistics">
+    <div class="admin-stat">
+        <div class="admin-stat-top">
+            <div class="admin-stat-icon"><i class="fas fa-shirt"></i></div>
+            <i class="fas fa-arrow-up admin-stat-arrow"></i>
+        </div>
+        <div class="admin-stat-label">Jerseys</div>
+        <div class="admin-stat-value">@Model.TotalJerseys</div>
+    </div>
+    <div class="admin-stat">
+        <div class="admin-stat-top">
+            <div class="admin-stat-icon"><i class="fas fa-trophy"></i></div>
+            <i class="fas fa-arrow-up admin-stat-arrow"></i>
+        </div>
+        <div class="admin-stat-label">Leagues</div>
+        <div class="admin-stat-value">@Model.TotalLeagues</div>
+    </div>
+    <div class="admin-stat">
+        <div class="admin-stat-top">
+            <div class="admin-stat-icon"><i class="fas fa-shield-halved"></i></div>
+            <i class="fas fa-arrow-up admin-stat-arrow"></i>
+        </div>
+        <div class="admin-stat-label">Clubs</div>
+        <div class="admin-stat-value">@Model.TotalClubs</div>
+    </div>
+    <div class="admin-stat">
+        <div class="admin-stat-top">
+            <div class="admin-stat-icon"><i class="fas fa-globe"></i></div>
+            <i class="fas fa-arrow-up admin-stat-arrow"></i>
+        </div>
+        <div class="admin-stat-label">International</div>
+        <div class="admin-stat-value">@Model.TotalInterLeagues</div>
+    </div>
+    <div class="admin-stat">
+        <div class="admin-stat-top">
+            <div class="admin-stat-icon"><i class="fas fa-flag"></i></div>
+            <i class="fas fa-arrow-up admin-stat-arrow"></i>
+        </div>
+        <div class="admin-stat-label">Nations</div>
+        <div class="admin-stat-value">@Model.TotalNations</div>
+    </div>
+    <div class="admin-stat">
+        <div class="admin-stat-top">
+            <div class="admin-stat-icon"><i class="fas fa-users"></i></div>
+            <i class="fas fa-arrow-up admin-stat-arrow"></i>
+        </div>
+        <div class="admin-stat-label">Users</div>
+        <div class="admin-stat-value">@Model.TotalUsers</div>
+    </div>
+</section>
+
+<div class="admin-quick-grid">
+    <a asp-controller="Admin" asp-action="Jerseys" class="admin-quick">
+        <span class="admin-quick-icon"><i class="fas fa-shirt"></i></span>
+        <span>
+            <strong>Manage jerseys</strong>
+            <span>Edit inventory and prices</span>
+        </span>
+    </a>
+    <a asp-controller="Admin" asp-action="Clubs" class="admin-quick">
+        <span class="admin-quick-icon"><i class="fas fa-shield-halved"></i></span>
+        <span>
+            <strong>Manage clubs</strong>
+            <span>Organize club collections</span>
+        </span>
+    </a>
+    <a asp-controller="Admin" asp-action="Users" class="admin-quick">
+        <span class="admin-quick-icon"><i class="fas fa-users"></i></span>
+        <span>
+            <strong>Manage users</strong>
+            <span>Roles and account access</span>
+        </span>
+    </a>
+</div>
+
+<section class="admin-card">
+    <div class="admin-card-head">
+        <div>
+            <h2 class="admin-card-title">Recent jerseys</h2>
+            <span class="admin-card-meta">Latest products added to the catalog</span>
+        </div>
+        <a asp-controller="Admin" asp-action="Jerseys" class="admin-view-link">
+            View all <i class="fas fa-arrow-right ms-1"></i>
+        </a>
+    </div>
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Team / nation</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.RecentJerseys?.Any() == true)
+                {
+                    foreach (var j in Model.RecentJerseys)
+                    {
+                        <tr>
+                            <td>
+                                <div class="admin-item">
+                                    <img src="@Url.Content($"~/img/jerseys/{j.img}")"
+                                         class="admin-thumb" alt="@j.Name" />
+                                    <div class="admin-item-copy">
+                                        <strong>@j.Name</strong>
+                                        <span>@(j.IsInter ? "International" : "Club")</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="admin-secondary">@(j.IsInter ? j.Nation?.Name : j.Club?.Name)</td>
+                            <td><span class="admin-pill">@j.Category</span></td>
+                            <td class="admin-primary">$@j.Price</td>
+                            <td>
+                                <div class="admin-actions">
+                                    <a asp-controller="Jerseys" asp-action="Edit"
+                                       asp-route-id="@j.JerseysId"
+                                       class="admin-action" title="Edit">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                    <a asp-controller="Jerseys" asp-action="Delete"
+                                       asp-route-id="@j.JerseysId"
+                                       class="admin-action danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5">
+                            <div class="admin-empty">
+                                <i class="fas fa-shirt"></i>
+                                <strong>No jerseys yet</strong>
+                                <span>Add your first jersey to start building the catalog.</span>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

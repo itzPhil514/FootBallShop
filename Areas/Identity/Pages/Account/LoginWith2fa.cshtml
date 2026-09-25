@@ -4,36 +4,58 @@
     ViewData["Title"] = "Two-factor authentication";
 }
 
-<h1>@ViewData["Title"]</h1>
-<hr />
-<p>Your login is protected with an authenticator app. Enter your authenticator code below.</p>
-<div class="row">
-    <div class="col-md-4">
+<div class="container my-5" style="max-width:480px;">
+    <div class="fbs-auth-card p-4">
+        <div class="text-center mb-4">
+            <i class="fas fa-envelope-open-text fa-3x text-danger mb-3"></i>
+            <h2 class="page-title" style="font-size:1.4rem;">Check your email</h2>
+            <p class="text-muted" style="font-size:0.9rem;">
+                We've sent a 6-digit code to your email address.<br />
+                Enter it below to complete sign-in.
+            </p>
+        </div>
+
         <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
             <input asp-for="RememberMe" type="hidden" />
-            <input asp-for="Input.TwoFactAuthProviderName" type="hidden" />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.TwoFactorCode" class="form-control" autocomplete="off" />
-                <label asp-for="Input.TwoFactorCode" class="form-label"></label>
-                <span asp-validation-for="Input.TwoFactorCode" class="text-danger"></span>
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2" role="alert"></div>
+
+            <div class="mb-3">
+                <label asp-for="Input.TwoFactorCode" class="fbs-label">One-time code</label>
+                <input asp-for="Input.TwoFactorCode"
+                       class="form-control form-control-lg text-center fbs-otp-input mt-2"
+                       autocomplete="off"
+                       maxlength="6"
+                       placeholder="_ _ _ _ _ _" />
+                <span asp-validation-for="Input.TwoFactorCode" class="text-danger small"></span>
             </div>
-            <div class="checkbox mb-3">
-                <label asp-for="Input.RememberMachine" class="form-label">
-                    <input asp-for="Input.RememberMachine" />
-                    @Html.DisplayNameFor(m => m.Input.RememberMachine)
+
+            <div class="form-check mb-4">
+                <input asp-for="Input.RememberMachine" class="form-check-input" />
+                <label asp-for="Input.RememberMachine" class="form-check-label" style="font-size:0.85rem;">
+                    Don't ask again on this device
                 </label>
             </div>
-            <div>
-                <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-sign-in-alt me-2"></i> Verify & Sign In
+            </button>
         </form>
+
+        <p class="text-center mt-3" style="font-size:0.8rem;color:#9E9E9E;">
+            Didn't receive the code? Check your spam folder or
+            <a asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl" class="text-danger">
+                use a recovery code
+            </a>.
+        </p>
     </div>
 </div>
-<p>
-    Don't have access to your authenticator device? You can
-    <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">log in with a recovery code</a>.
-</p>
+
+<style>
+    .fbs-auth-card { background:#fff; border-top:3px solid #E8001D; box-shadow:0 4px 20px rgba(0,0,0,0.08); }
+    .fbs-label { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:#555; }
+    .fbs-otp-input { font-size:1.8rem; font-weight:900; letter-spacing:0.4em; border-radius:0; border:2px solid #E0E0E0; }
+    .fbs-otp-input:focus { border-color:#E8001D; box-shadow:none; }
+</style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

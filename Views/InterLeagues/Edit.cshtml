@@ -1,39 +1,37 @@
 ﻿@model FootBallShop.Models.InterLeagues
-
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit International League"; Layout = "_Layout";
 }
 
-<h1>Edit</h1>
-
-<h4>InterLeagues</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="interLeaguesId" />
-            <div class="form-group">
-                <label asp-for="interLeaguesName" class="control-label"></label>
-                <input asp-for="interLeaguesName" class="form-control" />
-                <span asp-validation-for="interLeaguesName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="img" class="control-label"></label>
-                <input asp-for="img" class="form-control" />
-                <span asp-validation-for="img" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+<div class="fbs-section-header">
+    <h2 class="page-title">Edit International League</h2>
+    <div class="fbs-title-bar"></div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="fbs-admin-card">
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+        <input type="hidden" asp-for="interLeaguesId" />
+        <div class="fbs-form-group">
+            <label asp-for="interLeaguesName" class="fbs-label">Name</label>
+            <input asp-for="interLeaguesName" class="form-control fbs-input" />
+            <span asp-validation-for="interLeaguesName" class="text-danger small"></span>
+        </div>
+        <div class="fbs-form-group">
+            <label asp-for="img" class="fbs-label">Logo</label>
+            <input type="file" asp-for="img" class="form-control fbs-input" />
+            <span asp-validation-for="img" class="text-danger small"></span>
+        </div>
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
 }

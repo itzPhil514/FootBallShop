@@ -1,0 +1,94 @@
+@model IEnumerable<FootBallShop.Models.Nations>
+@{
+    ViewData["Title"] = "Nations";
+    ViewData["AdminActive"] = "nations";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-page-head">
+    <div>
+        <p class="admin-kicker">National teams</p>
+        <h1 class="admin-page-title">
+            Nations <span class="admin-pill red">@Model.Count()</span>
+        </h1>
+        <p class="admin-page-subtitle">Manage countries and their international competitions.</p>
+    </div>
+    <div class="admin-head-actions">
+        <form asp-action="Nations" method="get" class="admin-search">
+            <i class="fas fa-search"></i>
+            <input type="search" name="q" value="@ViewBag.Q" placeholder="Search nations..." />
+        </form>
+        <a asp-controller="Nations" asp-action="Create" class="admin-btn admin-btn-primary">
+            <i class="fas fa-plus"></i> New nation
+        </a>
+    </div>
+</div>
+
+<section class="admin-card">
+    <div class="admin-card-head">
+        <div>
+            <h2 class="admin-card-title">Nation directory</h2>
+            <span class="admin-card-meta">National team catalog</span>
+        </div>
+    </div>
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Nation</th>
+                    <th>Competition</th>
+                    <th>Jerseys</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var n in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="admin-item">
+                                    <img src="@Url.Content($"~/img/nations/{n.img}")"
+                                         class="admin-thumb" alt="@n.Name" />
+                                    <div class="admin-item-copy">
+                                        <strong>@n.Name</strong>
+                                        <span>Nation #@n.NationId</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="admin-secondary">@n.InterLeagues?.interLeaguesName</td>
+                            <td class="admin-secondary">@(n.Jerseys?.Count ?? 0) jerseys</td>
+                            <td>
+                                <div class="admin-actions">
+                                    <a asp-controller="Nations" asp-action="Edit"
+                                       asp-route-id="@n.NationId"
+                                       class="admin-action" title="Edit">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                    <a asp-controller="Nations" asp-action="Delete"
+                                       asp-route-id="@n.NationId"
+                                       class="admin-action danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">
+                            <div class="admin-empty">
+                                <i class="fas fa-flag"></i>
+                                <strong>No nations found</strong>
+                                <span>Add a nation to build the international catalog.</span>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

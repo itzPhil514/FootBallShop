@@ -1,88 +1,114 @@
 ﻿@model List<FootBallShop.Models.Cart>
-
 @{
     ViewData["Title"] = "Your Cart";
 }
 
-<h2>Your Cart</h2>
-
-<table class="table table-responsive">
-    <thead>
-        <tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Size</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Subtotal</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @if (item.jersey != null)
-                    {
-                        <img src="@Url.Content($"~/img/jerseys/{item.jersey.img}")" alt="Tshirt Image" style="width: 100px; height: auto;">
-                    }
-                </td>
-                <td>@item.jersey.Name</td>
-                <td>@item.Size</td>
-                <td>$@item.jersey.Price</td>
-                <td>
-                    <form id="decrease-form-@item.jersey?.JerseysId-@item.Size" asp-action="DecreaseQuantity" method="post" style="display:inline;">
-                        <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
-                        <input type="hidden" name="Size" value="@item.Size" />
-                        <button type="submit" class="btn btn-primary btn-sm">-</button>
-                    </form>
-
-                    <form id="quantity-form-@item.jersey?.JerseysId-@item.Size" asp-action="UpdateQuantity" method="post" style="display:inline;">
-                        <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
-                        <input type="hidden" name="Size" value="@item.Size" />
-                        <input type="number" name="Quantity" value="@item.Quantity" min="1" class="form-control d-inline-block text-center" style="width: 60px;" id="quantity-input-@item.jersey?.JerseysId-@item.Size" onchange="submitForm(this)">
-                    </form>
-
-                    <form id="increase-form-@item.jersey?.JerseysId-@item.Size" asp-action="IncreaseQuantity" method="post" style="display:inline;">
-                        <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
-                        <input type="hidden" name="Size" value="@item.Size" />
-                        <button type="submit" class="btn btn-primary btn-sm">+</button>
-                    </form>
-                </td>
-                <td>$@(item.jersey.Price * item.Quantity)</td>
-                <td>
-                    <form asp-action="AddToWishlist" method="post" asp-controller="Wishlist" style="display:inline;">
-                        <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
-                        <input type="hidden" name="Size" value="@item.Size" />
-                        <button type="submit" class="btn btn-secondary btn-sm">
-                            <img src="~/img/heart-15.png" alt="Wishlist" style="width: 20px; height: 20px;" />
-                        </button>
-                    </form>
-                    <form asp-action="RemoveFromCart" method="post" style="display:inline;">
-                        <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
-                        <input type="hidden" name="Size" value="@item.Size" />
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <img src="~/img/bin.png" alt="Delete" style="width: 20px; height: 20px;" />
-                            </button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="fbs-section-header">
+    <h2 class="page-title">Your Cart</h2>
+    <div class="fbs-title-bar"></div>
+</div>
 
 @if (Model.Any())
 {
-    var totalPrice = Model.Sum(item => (item.jersey?.Price ?? 0) * item.Quantity);
-    <div class="d-flex justify-content-between align-items-center mt-4">
-        <h4>Total Price: $@totalPrice</h4>
-        <form asp-action="Checkout" method="post">
-            <button type="submit" class="btn btn-primary btn-block gradient-custom-2 mb-3">Proceed to Checkout</button>
-        </form>
+    <div class="row g-4">
+        <div class="col-lg-8">
+            @foreach (var item in Model)
+            {
+                <div class="fbs-cart-row mb-3">
+                    @if (item.jersey != null)
+                    {
+                        <a asp-controller="Jerseys" asp-action="Details" asp-route-id="@item.jersey.JerseysId">
+                            <img src="@Url.Content($"~/img/jerseys/{item.jersey.img}")"
+                                 alt="@item.jersey.Name" class="fbs-cart-img" />
+                        </a>
+                    }
+                    <div class="flex-grow-1">
+                        <p class="fbs-cart-name mb-1">@item.jersey?.Name</p>
+                        <p class="fbs-cart-meta mb-1">Size: <strong>@item.Size</strong></p>
+                        <p class="fbs-cart-price mb-0">$@item.jersey?.Price</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        <form asp-action="DecreaseQuantity" method="post">
+                            <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
+                            <input type="hidden" name="Size" value="@item.Size" />
+                            <button type="submit" class="btn btn-outline-secondary btn-sm fbs-qty-btn">−</button>
+                        </form>
+                        <form asp-action="UpdateQuantity" method="post">
+                            <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
+                            <input type="hidden" name="Size" value="@item.Size" />
+                            <input type="number" name="Quantity" value="@item.Quantity" min="1"
+                                   class="form-control text-center fbs-qty-input"
+                                   onchange="this.form.submit()" />
+                        </form>
+                        <form asp-action="IncreaseQuantity" method="post">
+                            <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
+                            <input type="hidden" name="Size" value="@item.Size" />
+                            <button type="submit" class="btn btn-outline-secondary btn-sm fbs-qty-btn">+</button>
+                        </form>
+                    </div>
+                    <p class="fbs-cart-subtotal mb-0">$@(item.jersey?.Price * item.Quantity)</p>
+                    <div class="d-flex flex-column gap-1">
+                        <form asp-action="AddToWishlist" method="post" asp-controller="Wishlist">
+                            <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
+                            <input type="hidden" name="Size" value="@item.Size" />
+                            <button type="submit" class="btn btn-outline-secondary btn-sm" title="Save for later">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </form>
+                        <form asp-action="RemoveFromCart" method="post">
+                            <input type="hidden" name="TshirtId" value="@item.jersey?.JerseysId" />
+                            <input type="hidden" name="Size" value="@item.Size" />
+                            <button type="submit" class="btn btn-outline-danger btn-sm" title="Remove">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="col-lg-4">
+            @{
+                var total = Model.Sum(i => (i.jersey?.Price ?? 0) * i.Quantity);
+                var shipping = total >= 75 ? 0 : 9.99m;
+            }
+            <div class="fbs-order-summary">
+                <h5 class="fbs-summary-title mb-4">Order Summary</h5>
+                <div class="d-flex justify-content-between mb-2">
+                    <span style="color:var(--text-secondary);">Subtotal</span>
+                    <span>$@total</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span style="color:var(--text-secondary);">Shipping</span>
+                    <span style="color:@(shipping == 0 ? "var(--red)" : "inherit")">
+                        @(shipping == 0 ? "FREE" : $"${shipping}")
+                    </span>
+                </div>
+                <hr class="fbs-divider" />
+                <div class="d-flex justify-content-between mb-4">
+                    <strong>Total</strong>
+                    <strong style="color:var(--red);">$@(total + shipping)</strong>
+                </div>
+                <form asp-action="Checkout" method="post">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Proceed to Checkout <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </form>
+                @if (shipping > 0)
+                {
+                    <div class="fbs-shipping-banner mt-3">
+                        Add <strong>$@(75 - total)</strong> more for free shipping
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 }
 else
 {
-    <p>Your cart is empty.</p>
+    <div class="fbs-empty">
+        <i class="fas fa-shopping-cart d-block"></i>
+        <p>Your cart is empty.</p>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-2">Start Shopping</a>
+    </div>
 }

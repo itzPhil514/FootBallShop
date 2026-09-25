@@ -1,203 +1,101 @@
 ﻿@model FootBallShop.Models.Jerseys
-
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Jersey"; Layout = "_Layout";
 }
 
-<h1>Create a New Jersey</h1>
-
-<h4>Enter the Jersey's Details</h4>
-<hr />
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <form asp-action="Create" method="post" enctype="multipart/form-data" class="bg-light p-4 rounded shadow-sm">
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-                <!-- IsInter Radio Buttons -->
-                <div class="form-group">
-                    <label class="control-label">Type:</label>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" asp-for="IsInter" value="true" id="IsInterTrue" class="form-check-input" />
-                        <label for="IsInterTrue" class="form-check-label">International</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" asp-for="IsInter" value="false" id="IsInterFalse" class="form-check-input" checked />
-                        <label for="IsInterFalse" class="form-check-label">Regular</label>
-                    </div>
-                </div>
-
-                <!-- Name Input -->
-                <div class="form-group">
-                    <label asp-for="Name" class="control-label">Name</label>
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-
-                <!-- Price Input -->
-                <div class="form-group">
-                    <label asp-for="Price" class="control-label">Price</label>
-                    <input asp-for="Price" class="form-control" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
-                </div>
-
-                <!-- Size Dropdown -->
-                <div class="form-group">
-                    <label asp-for="Size" class="control-label">Size</label>
-                    <select asp-for="Size" class="form-control">
-                        <option value="">Select Size</option>
-                        <option value="XS">XS</option>
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="L">L</option>
-                        <option value="XL">XL</option>
-                        <option value="XXL">XXL</option>
-                        <option value="XXXL">XXXL</option>
-                    </select>
-                    <span asp-validation-for="Size" class="text-danger"></span>
-                </div>
-
-                <!-- League and Club Dropdowns -->
-                <div id="regular-jersey-fields">
-                    <div class="form-group">
-                        <label asp-for="LeagueId" class="control-label">League</label>
-                        <select asp-for="LeagueId" class="form-control" id="LeagueDropdown">
-                            <option value="">Select League</option>
-                        </select>
-                        <span asp-validation-for="LeagueId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ClubId" class="control-label">Club</label>
-                        <select asp-for="ClubId" class="form-control" id="ClubDropdown">
-                            <option value="">Select Club</option>
-                        </select>
-                        <span asp-validation-for="ClubId" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <!-- Category Dropdown -->
-                <div class="form-group">
-                    <label asp-for="Category" class="control-label">Category</label>
-                    <select asp-for="Category" class="form-control">
-                        <option value="">Select Category</option>
-                        <option value="Jersey">Jersey</option>
-                        <option value="Training Kit">Training Kit</option>
-                        <option value="Goalkeeper Kit">Goalkeeper Kit</option>
-                        <option value="Warm-up Kit">Warm-up Kit</option>
-                    </select>
-                    <span asp-validation-for="Category" class="text-danger"></span>
-                </div>
-
-                <!-- InterLeague and Nation Dropdowns -->
-                <div id="international-jersey-fields" style="display:none;">
-                    <div class="form-group">
-                        <label asp-for="interLeaguesId" class="control-label">International League</label>
-                        <select asp-for="interLeaguesId" class="form-control" id="InterLeagueDropdown">
-                            <option value="">Select International League</option>
-                        </select>
-                        <span asp-validation-for="interLeaguesId" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="NationId" class="control-label">Nation</label>
-                        <select asp-for="NationId" class="form-control" id="NationDropdown">
-                            <option value="">Select Nation</option>
-                        </select>
-                        <span asp-validation-for="NationId" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <!-- Logo Input -->
-                <div class="form-group">
-                    <label asp-for="img" class="control-label">Logo</label>
-                    <input asp-for="img" type="file" class="form-control-file" />
-                    <span asp-validation-for="img" class="text-danger"></span>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
-    </div>
+<div class="fbs-section-header">
+    <h2 class="page-title">Create Jersey</h2>
+    <div class="fbs-title-bar"></div>
 </div>
 
-<div class="text-center mt-4">
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+<div class="fbs-admin-card">
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+
+        <div class="fbs-form-group">
+            <span class="fbs-label">Type</span>
+            <div class="d-flex gap-3 mt-1">
+                <div class="form-check">
+                    <input type="radio" asp-for="IsInter" value="false" id="IsInterFalse" class="form-check-input" checked />
+                    <label for="IsInterFalse" class="form-check-label">Club</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" asp-for="IsInter" value="true" id="IsInterTrue" class="form-check-input" />
+                    <label for="IsInterTrue" class="form-check-label">International</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="fbs-form-group">
+            <label asp-for="Name" class="fbs-label">Name</label>
+            <input asp-for="Name" class="form-control fbs-input" />
+            <span asp-validation-for="Name" class="text-danger small"></span>
+        </div>
+
+        <div class="fbs-form-group">
+            <label asp-for="Price" class="fbs-label">Price ($)</label>
+            <input asp-for="Price" class="form-control fbs-input" />
+            <span asp-validation-for="Price" class="text-danger small"></span>
+        </div>
+
+
+        <div class="fbs-form-group">
+            <label asp-for="Category" class="fbs-label">Category</label>
+            <select asp-for="Category" class="form-select fbs-input">
+                <option value="">Select Category</option>
+                <option>Jersey</option>
+                <option>Training Kit</option>
+                <option>Goalkeeper Kit</option>
+                <option>Warm-up Kit</option>
+            </select>
+        </div>
+
+        <div id="regular-jersey-fields">
+            <div class="fbs-form-group">
+                <label asp-for="LeagueId" class="fbs-label">League</label>
+                <select asp-for="LeagueId" class="form-select fbs-input" id="LeagueDropdown">
+                    <option value="">Select League</option>
+                </select>
+            </div>
+            <div class="fbs-form-group">
+                <label asp-for="ClubId" class="fbs-label">Club</label>
+                <select asp-for="ClubId" class="form-select fbs-input" id="ClubDropdown">
+                    <option value="">Select Club</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="international-jersey-fields" style="display:none;">
+            <div class="fbs-form-group">
+                <label asp-for="interLeaguesId" class="fbs-label">International League</label>
+                <select asp-for="interLeaguesId" class="form-select fbs-input" id="InterLeagueDropdown">
+                    <option value="">Select League</option>
+                </select>
+            </div>
+            <div class="fbs-form-group">
+                <label asp-for="NationId" class="fbs-label">Nation</label>
+                <select asp-for="NationId" class="form-select fbs-input" id="NationDropdown">
+                    <option value="">Select Nation</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="fbs-form-group">
+            <label asp-for="img" class="fbs-label">Jersey Image</label>
+            <input asp-for="img" type="file" class="form-control fbs-input" />
+            <span asp-validation-for="img" class="text-danger small"></span>
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">Create Jersey</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            function loadLeaguesOrInterLeagues() {
-                var isInternational = $('#IsInterTrue').is(':checked');
-                var url = isInternational 
-                    ? '@Url.Action("GetInternationalLeaguesAndNations")' 
-                    : '@Url.Action("GetRegularLeaguesAndClubs")';
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
-                $.getJSON(url, function (data) {
-                    if (isInternational) {
-                        fillDropdown('#InterLeagueDropdown', data.interLeagues);
-                    } else {
-                        fillDropdown('#LeagueDropdown', data.leagues);
-                    }
-                });
-            }
-
-            function loadClubsOrNationsById(id, isInternational) {
-                var url = isInternational 
-                    ? '@Url.Action("GetNationsByInterLeague")' 
-                    : '@Url.Action("GetClubsByLeague")';
-                
-                $.getJSON(url, { [isInternational ? 'interLeagueId' : 'leagueId']: id }, function (data) {
-                    if (isInternational) {
-                        fillDropdown('#NationDropdown', data.nations);
-                    } else {
-                        fillDropdown('#ClubDropdown', data.clubs);
-                    }
-                });
-            }
-
-            function fillDropdown(selector, items) {
-                var dropdown = $(selector);
-                dropdown.empty().append('<option value="">Select</option>');
-                $.each(items, function (index, item) {
-                    dropdown.append(`<option value="${item.value}">${item.text}</option>`);
-                });
-            }
-
-            function toggleFields() {
-                var isInternational = $('#IsInterTrue').is(':checked');
-                $('#regular-jersey-fields').toggle(!isInternational);
-                $('#international-jersey-fields').toggle(isInternational);
-            }
-
-            $('input[name="IsInter"]').change(function () {
-                toggleFields();
-                loadLeaguesOrInterLeagues();
-            });
-
-            toggleFields();
-            loadLeaguesOrInterLeagues();
-
-            $('#LeagueDropdown').change(function () {
-                var leagueId = $(this).val();
-                if (leagueId) {
-                    loadClubsOrNationsById(leagueId, false);
-                } else {
-                    $('#ClubDropdown').empty().append('<option value="">Select Club</option>');
-                }
-            });
-
-            $('#InterLeagueDropdown').change(function () {
-                var interLeagueId = $(this).val();
-                if (interLeagueId) {
-                    loadClubsOrNationsById(interLeagueId, true);
-                } else {
-                    $('#NationDropdown').empty().append('<option value="">Select Nation</option>');
-                }
-            });
-        });
-    </script>
 }

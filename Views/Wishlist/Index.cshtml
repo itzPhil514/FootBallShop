@@ -1,43 +1,48 @@
 ﻿@model List<FootBallShop.Models.Wishlist>
-
 @{
     ViewData["Title"] = "Your Wishlist";
 }
 
-<h2>Your Wishlist</h2>
+<div class="fbs-section-header">
+    <h2 class="page-title">Wishlist</h2>
+    <div class="fbs-title-bar"></div>
+</div>
 
-<table class="table table-responsive">
-    <thead>
-        <tr>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
+@if (Model.Any())
+{
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
+            <div class="col">
+                <div class="fbs-wish-wrap h-100">
                     <a asp-controller="Jerseys" asp-action="Details" asp-route-id="@item.jerseys.JerseysId">
-                        <img src="@Url.Content($"~/img/jerseys/{item.jerseys.img}")" alt="Tshirt Image" style="width: 100px; height: auto;">
+                        <div class="fbs-jersey-img-wrap">
+                            <img src="@Url.Content($"~/img/jerseys/{item.jerseys.img}")"
+                                 class="fbs-jersey-card-img" alt="@item.jerseys.Name" />
+                        </div>
+                        <div class="fbs-jersey-card-body">
+                            <p class="fbs-jersey-card-title">@item.jerseys.Name</p>
+                            <p class="fbs-jersey-card-price">$@item.jerseys.Price</p>
+                        </div>
                     </a>
-                </td>
-                <td>@item.jerseys.Name</td>
-                <td>
-                    <form asp-action="RemoveFromWishlist" method="post" style="display:inline;">
-                        <input type="hidden" name="TshirtId" value="@item.jerseys.JerseysId" />
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <img src="~/img/bin.png" alt="Wishlist" style="width: 20px; height: 20px;" />
-                        </button>
-                    </form>
-                </td>
-            </tr>
+                    <div style="padding:0 1rem 1rem;">
+                        <form asp-action="RemoveFromWishlist" method="post">
+                            <input type="hidden" name="TshirtId" value="@item.jerseys.JerseysId" />
+                            <button type="submit" class="btn btn-outline-danger btn-sm w-100">
+                                <i class="fas fa-trash me-1"></i> Remove
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
-
-@if (!Model.Any())
+    </div>
+}
+else
 {
-    <p>Your wishlist is empty.</p>
+    <div class="fbs-empty">
+        <i class="fas fa-heart d-block"></i>
+        <p>Your wishlist is empty.</p>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-2">Discover Jerseys</a>
+    </div>
 }

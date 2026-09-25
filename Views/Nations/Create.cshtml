@@ -1,42 +1,40 @@
 ﻿@model FootBallShop.Models.Nations
-
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Nation"; Layout = "_Layout";
 }
 
-<h1>Create</h1>
-
-<h4>Nations</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">Name</label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="interLeaguesId" class="control-label">League</label>
-                <select asp-for="interLeaguesId" class ="form-control" asp-items="ViewBag.interLeaguesId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="img" class="control-label">Logo</label>
-                <input asp-for="img" class="form-control" type="file" />
-                <span asp-validation-for="img" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+<div class="fbs-section-header">
+    <h2 class="page-title">Create Nation</h2>
+    <div class="fbs-title-bar"></div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="fbs-admin-card">
+    <form asp-action="Create" enctype="multipart/form-data" method="post">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+        <div class="fbs-form-group">
+            <label asp-for="Name" class="fbs-label">Name</label>
+            <input asp-for="Name" class="form-control fbs-input" />
+            <span asp-validation-for="Name" class="text-danger small"></span>
+        </div>
+        <div class="fbs-form-group">
+            <label asp-for="interLeaguesId" class="fbs-label">International League</label>
+            <select asp-for="interLeaguesId" class="form-select fbs-input" asp-items="ViewBag.interLeaguesId"></select>
+        </div>
+        <div class="fbs-form-group">
+            <label asp-for="img" class="fbs-label">Flag / Logo</label>
+            <input asp-for="img" class="form-control fbs-input" type="file" />
+            <span asp-validation-for="img" class="text-danger small"></span>
+        </div>
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">Create Nation</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
 }

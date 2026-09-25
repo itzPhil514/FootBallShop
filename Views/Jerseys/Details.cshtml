@@ -1,73 +1,163 @@
 ﻿@model FootBallShop.Models.Jerseys
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Name;
     Layout = "_Layout";
 }
 
-<div class="container my-4">
-    <div class="detail-container">
-        <div class="row">
-            <!-- Image Section -->
-            <div class="col-md-6">
-                <img src="@Url.Content($"~/img/jerseys/{Model.img}")" class="img-fluid detail-img" alt="@Model.Name">
+<div class="container my-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb fbs-breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            @if (Model.Club != null)
+            {
+                <li class="breadcrumb-item"><a asp-controller="Leagues" asp-action="Index">Leagues</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Clubs" asp-action="Jersey" asp-route-id="@Model.Club.ClubId">@Model.Club.Name</a></li>
+            }
+            else if (Model.Nation != null)
+            {
+                <li class="breadcrumb-item"><a asp-controller="InterLeagues" asp-action="Index">International</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Nations" asp-action="NationJersey" asp-route-id="@Model.Nation.NationId">@Model.Nation.Name</a></li>
+            }
+            <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+        <!-- Image -->
+        <div class="col-md-6">
+            <div class="image-wrapper zoom-container">
+                <img src="@Url.Content($"~/img/jerseys/{Model.img}")"
+                     class="img-fluid detail-img zoom-img w-100"
+                     alt="@Model.Name" />
             </div>
-            <!-- Details Section -->
-            <div class="col-md-6">
-                <div class="detail-info">
-                    <h2 class="detail-title">@Model.Name</h2>
-                    <p class="detail-text"><strong>Price:</strong> $@Model.Price</p>
+        </div>
 
-                    @if (Model.Club != null)
-                    {
-                        <p class="detail-text"><strong>Team:</strong> @Model.Club.Name</p>
-                        <p class="detail-text"><strong>League:</strong> @Model.League.LeagueName</p>
-                    }
-                    else if (Model.Nation != null)
-                    {
-                        <p class="detail-text"><strong>National Team:</strong> @Model.Nation.Name</p>
-                        <p class="detail-text"><strong>International League:</strong> @Model.Nation.InterLeagues.interLeaguesName</p>
-                    }
+        <!-- Info -->
+        <div class="col-md-6">
+            <div class="detail-info h-100">
+                @if (Model.Club != null)
+                {
+                    <p class="fbs-detail-eyebrow">@Model.League?.LeagueName · @Model.Club.Name</p>
+                }
+                else if (Model.Nation != null)
+                {
+                    <p class="fbs-detail-eyebrow">@Model.Nation.InterLeagues?.interLeaguesName · @Model.Nation.Name</p>
+                }
 
-                    <!-- Add to Cart Form -->
-                    <form asp-action="AddToCart" method="post" asp-controller="Cart" class="detail-form">
-                        <input type="hidden" name="TshirtId" value="@Model.JerseysId" />
+                <h1 class="detail-title">@Model.Name</h1>
+                <p class="fbs-price">$@Model.Price</p>
 
-                        <div class="form-group">
-                            <label for="size">Size:</label>
-                            <select name="size" class="form-control" id="size">
-                                <option value="XS">XS</option>
-                                <option value="S">S</option>
-                                <option value="M">M</option>
-                                <option value="L">L</option>
-                                <option value="XL">XL</option>
-                                <option value="XXL">XXL</option>
-                            </select>
+                <hr class="fbs-divider" />
+
+                <!-- Add to Cart -->
+                <form asp-action="AddToCart" method="post" asp-controller="Cart" class="detail-form">
+                    <input type="hidden" name="TshirtId" value="@Model.JerseysId" />
+
+                    <div class="mb-3">
+                        <label class="fbs-label" for="size">Size</label>
+                        <div class="d-flex flex-wrap gap-2 mt-2" id="size-picker">
+                            @foreach (var s in new[] { "XS", "S", "M", "L", "XL", "XXL" })
+                            {
+                                <input type="radio" class="btn-check" name="size" id="size-@s" value="@s" autocomplete="off" @(s == "M" ? "checked" : "") />
+                                <label class="btn btn-outline-secondary fbs-size-btn" for="size-@s">@s</label>
+                            }
                         </div>
+                    </div>
 
-                        <div class="form-group mt-3">
-                            <label for="quantity">Quantity:</label>
-                            <div class="input-group">
-                                <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(-1)">-</button>
-                                <input type="number" name="quantity" class="form-control text-center" id="quantity" value="1" min="1" />
-                                <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(1)">+</button>
-                            </div>
+                    <div class="mb-4">
+                        <label class="fbs-label" for="quantity">Quantity</label>
+                        <div class="input-group quantity-control mt-2" style="max-width:160px;">
+                            <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(-1)">−</button>
+                            <input type="number" name="quantity" class="form-control text-center" id="quantity" value="1" min="1" />
+                            <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(1)">+</button>
                         </div>
+                    </div>
 
-                        <button type="submit" class="btn btn-primary mt-3">Add to Cart</button>
-                    </form>
-
-                    <form asp-action="AddToWishlist" method="post" asp-controller="Wishlist" class="wishlist-form mt-3">
-                        <input type="hidden" name="TshirtId" value="@Model.JerseysId" />
-                        <input type="hidden" name="WishlistImg" value="@Model.img" />
-                        <button type="submit" class="btn btn-outline-secondary">
-                            <img src="~/img/heart-15.png" alt="Wishlist" style="width: 24px; height: 24px;" />
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button type="submit" class="btn btn-primary flex-grow-1">
+                            <i class="fas fa-shopping-cart me-2"></i>Add to Cart
                         </button>
-                    </form>
-                </div>
+                        <form asp-action="AddToWishlist" method="post" asp-controller="Wishlist" class="mb-0">
+                            <input type="hidden" name="TshirtId" value="@Model.JerseysId" />
+                            <input type="hidden" name="WishlistImg" value="@Model.img" />
+                            <button type="submit" class="btn btn-outline-secondary px-3" title="Add to Wishlist">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </form>
+                    </div>
+                </form>
+
+                <p class="fbs-shipping-note mt-4">
+                    <i class="fas fa-truck me-1"></i> Free shipping on orders over $75
+                </p>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .fbs-breadcrumb {
+        background: transparent;
+        padding: 0;
+        font-size: 0.85rem;
+    }
+
+        .fbs-breadcrumb a {
+            color: #E8001D;
+            text-decoration: none;
+        }
+
+            .fbs-breadcrumb a:hover {
+                text-decoration: underline;
+            }
+
+    .fbs-detail-eyebrow {
+        font-size: 0.75rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: #9E9E9E;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .fbs-price {
+        font-size: 2rem;
+        font-weight: 900;
+        color: #E8001D;
+        margin-bottom: 1rem;
+    }
+
+    .fbs-divider {
+        border-color: #E0E0E0;
+        margin: 1.25rem 0;
+    }
+
+    .fbs-label {
+        font-size: 0.75rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: #555;
+    }
+
+    .fbs-size-btn {
+        border-radius: 0 !important;
+        font-weight: 700;
+        font-size: 0.8rem;
+        min-width: 44px;
+    }
+
+    .btn-check:checked + .fbs-size-btn {
+        background-color: #0D0D0D;
+        border-color: #0D0D0D;
+        color: #fff;
+    }
+
+    .fbs-shipping-note {
+        font-size: 0.82rem;
+        color: #9E9E9E;
+    }
+</style>
 
 <script src="~/js/site.js"></script>

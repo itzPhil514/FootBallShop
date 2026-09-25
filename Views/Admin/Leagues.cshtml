@@ -1,0 +1,94 @@
+@model IEnumerable<FootBallShop.Models.Leagues>
+@{
+    ViewData["Title"] = "Leagues";
+    ViewData["AdminActive"] = "leagues";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-page-head">
+    <div>
+        <p class="admin-kicker">Competitions</p>
+        <h1 class="admin-page-title">
+            Leagues <span class="admin-pill red">@Model.Count()</span>
+        </h1>
+        <p class="admin-page-subtitle">Manage domestic league collections and their clubs.</p>
+    </div>
+    <div class="admin-head-actions">
+        <form asp-action="Leagues" method="get" class="admin-search">
+            <i class="fas fa-search"></i>
+            <input type="search" name="q" value="@ViewBag.Q" placeholder="Search leagues..." />
+        </form>
+        <a asp-controller="Leagues" asp-action="Create" class="admin-btn admin-btn-primary">
+            <i class="fas fa-plus"></i> New league
+        </a>
+    </div>
+</div>
+
+<section class="admin-card">
+    <div class="admin-card-head">
+        <div>
+            <h2 class="admin-card-title">League directory</h2>
+            <span class="admin-card-meta">Organize clubs by competition</span>
+        </div>
+    </div>
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>League</th>
+                    <th>Clubs</th>
+                    <th>Jerseys</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var l in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="admin-item">
+                                    <img src="@Url.Content($"~/img/leagues/{l.imgLeaguePath}")"
+                                         class="admin-thumb" alt="@l.LeagueName" />
+                                    <div class="admin-item-copy">
+                                        <strong>@l.LeagueName</strong>
+                                        <span>League ID #@l.LeagueId</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="admin-secondary">@(l.Clubs?.Count ?? 0) clubs</td>
+                            <td class="admin-secondary">@(l.Jersey?.Count ?? 0) jerseys</td>
+                            <td>
+                                <div class="admin-actions">
+                                    <a asp-controller="Leagues" asp-action="Edit"
+                                       asp-route-id="@l.LeagueId"
+                                       class="admin-action" title="Edit">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                    <a asp-controller="Leagues" asp-action="Delete"
+                                       asp-route-id="@l.LeagueId"
+                                       class="admin-action danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">
+                            <div class="admin-empty">
+                                <i class="fas fa-trophy"></i>
+                                <strong>No leagues found</strong>
+                                <span>Add a league to organize your club catalog.</span>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

@@ -1,57 +1,30 @@
 ﻿@model FootBallShop.Models.Jerseys
-
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Jersey"; Layout = "_Layout";
 }
 
-<h1>Delete</h1>
+<div class="fbs-section-header">
+    <h2 class="page-title">Delete Jersey</h2>
+    <div class="fbs-title-bar"></div>
+</div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Jerseys</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Size)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Size)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.League)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.League.LeagueName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Club)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Club.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.img)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.img)
-        </dd>
+<div class="fbs-admin-card">
+    <p class="fbs-delete-warning"><i class="fas fa-exclamation-triangle me-2"></i>Are you sure you want to delete <strong>@Model.Name</strong>?</p>
+    <dl class="fbs-dl mb-4">
+        <dt>Name</dt>
+        <dd>@Model.Name</dd>
+        <dt>Price</dt>
+        <dd>$@Model.Price</dd>
+        <dt>League</dt>
+        <dd>@Model.League?.LeagueName</dd>
+        <dt>Club</dt>
+        <dd>@Model.Club?.Name</dd>
     </dl>
-    
     <form asp-action="Delete">
         <input type="hidden" asp-for="JerseysId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
     </form>
 </div>

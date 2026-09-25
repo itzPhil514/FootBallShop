@@ -1,0 +1,95 @@
+@model IEnumerable<FootBallShop.Models.InterLeagues>
+@{
+    ViewData["Title"] = "International Leagues";
+    ViewData["AdminActive"] = "interleagues";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-page-head">
+    <div>
+        <p class="admin-kicker">International</p>
+        <h1 class="admin-page-title">
+            International leagues <span class="admin-pill red">@Model.Count()</span>
+        </h1>
+        <p class="admin-page-subtitle">Manage global competitions and their nations.</p>
+    </div>
+    <div class="admin-head-actions">
+        <form asp-action="InterLeagues" method="get" class="admin-search">
+            <i class="fas fa-search"></i>
+            <input type="search" name="q" value="@ViewBag.Q"
+                   placeholder="Search competitions..." />
+        </form>
+        <a asp-controller="InterLeagues" asp-action="Create" class="admin-btn admin-btn-primary">
+            <i class="fas fa-plus"></i> New competition
+        </a>
+    </div>
+</div>
+
+<section class="admin-card">
+    <div class="admin-card-head">
+        <div>
+            <h2 class="admin-card-title">International directory</h2>
+            <span class="admin-card-meta">Global competitions</span>
+        </div>
+    </div>
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Competition</th>
+                    <th>Nations</th>
+                    <th>Jerseys</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var il in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="admin-item">
+                                    <img src="@Url.Content($"~/img/interleagues/{il.img}")"
+                                         class="admin-thumb" alt="@il.interLeaguesName" />
+                                    <div class="admin-item-copy">
+                                        <strong>@il.interLeaguesName</strong>
+                                        <span>Competition #@il.interLeaguesId</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="admin-secondary">@(il.Nation?.Count ?? 0) nations</td>
+                            <td class="admin-secondary">@(il.Jersey?.Count ?? 0) jerseys</td>
+                            <td>
+                                <div class="admin-actions">
+                                    <a asp-controller="InterLeagues" asp-action="Edit"
+                                       asp-route-id="@il.interLeaguesId"
+                                       class="admin-action" title="Edit">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                    <a asp-controller="InterLeagues" asp-action="Delete"
+                                       asp-route-id="@il.interLeaguesId"
+                                       class="admin-action danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">
+                            <div class="admin-empty">
+                                <i class="fas fa-globe"></i>
+                                <strong>No international leagues found</strong>
+                                <span>Add a competition to start organizing nations.</span>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

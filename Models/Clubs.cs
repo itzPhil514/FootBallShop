@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Twilio.TwiML.Voice;
+
 using FootBallShop.Models;
 
 namespace FootBallShop.Models
@@ -26,4 +26,3 @@ namespace FootBallShop.Models
         public virtual ICollection<Jerseys> Jersey { get; set; }
     }
 }
-

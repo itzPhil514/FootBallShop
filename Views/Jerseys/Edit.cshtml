@@ -1,59 +1,52 @@
 ﻿@model FootBallShop.Models.Jerseys
-
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Jersey"; Layout = "_Layout";
 }
 
-<h1>Edit</h1>
-
-<h4>Jerseys</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="JerseysId" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Size" class="control-label"></label>
-                <input asp-for="Size" class="form-control" />
-                <span asp-validation-for="Size" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LeagueId" class="control-label"></label>
-                <select asp-for="LeagueId" class="form-control" asp-items="ViewBag.LeagueId"></select>
-                <span asp-validation-for="LeagueId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ClubId" class="control-label"></label>
-                <select asp-for="ClubId" class="form-control" asp-items="ViewBag.ClubId"></select>
-                <span asp-validation-for="ClubId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="img" class="control-label"></label>
-                <input asp-for="img" class="form-control" />
-                <span asp-validation-for="img" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+<div class="fbs-section-header">
+    <h2 class="page-title">Edit Jersey</h2>
+    <div class="fbs-title-bar"></div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="fbs-admin-card">
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+        <input type="hidden" asp-for="JerseysId" />
+        <div class="fbs-form-group">
+            <label asp-for="Name" class="fbs-label">Name</label>
+            <input asp-for="Name" class="form-control fbs-input" />
+            <span asp-validation-for="Name" class="text-danger small"></span>
+        </div>
+        <div class="fbs-form-group">
+            <label asp-for="Size" class="fbs-label">Size</label>
+            <input asp-for="Size" class="form-control fbs-input" />
+        </div>
+        <div class="fbs-form-group">
+            <label asp-for="Price" class="fbs-label">Price ($)</label>
+            <input asp-for="Price" class="form-control fbs-input" />
+        </div>
+        <div class="fbs-form-group">
+            <label asp-for="LeagueId" class="fbs-label">League</label>
+            <select asp-for="LeagueId" class="form-select fbs-input" asp-items="ViewBag.LeagueId"></select>
+        </div>
+        <div class="fbs-form-group">
+            <label asp-for="ClubId" class="fbs-label">Club</label>
+            <select asp-for="ClubId" class="form-select fbs-input" asp-items="ViewBag.ClubId"></select>
+        </div>
+        <div class="fbs-form-group">
+            <label asp-for="img" class="fbs-label">Jersey Image</label>
+            <input asp-for="img" class="form-control fbs-input" type="file" />
+        </div>
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
 }

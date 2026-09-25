@@ -1,0 +1,109 @@
+@model IEnumerable<FootBallShop.Models.Jerseys>
+@{
+    ViewData["Title"] = "Jerseys";
+    ViewData["AdminActive"] = "jerseys";
+    Layout = "_AdminLayout";
+}
+
+<div class="admin-page-head">
+    <div>
+        <p class="admin-kicker">Catalog</p>
+        <h1 class="admin-page-title">
+            Jerseys <span class="admin-pill red">@Model.Count()</span>
+        </h1>
+        <p class="admin-page-subtitle">Manage every jersey listed in your store.</p>
+    </div>
+    <div class="admin-head-actions">
+        <form asp-action="Jerseys" method="get" class="admin-search" id="admin-search-form">
+            <i class="fas fa-search"></i>
+            <input type="search" name="q" value="@ViewBag.Q"
+                   placeholder="Search jerseys..." aria-label="Search jerseys" />
+        </form>
+        <a asp-controller="Jerseys" asp-action="Create" class="admin-btn admin-btn-primary">
+            <i class="fas fa-plus"></i> New jersey
+        </a>
+    </div>
+</div>
+
+<section class="admin-card">
+    <div class="admin-card-head">
+        <div>
+            <h2 class="admin-card-title">Product catalog</h2>
+            <span class="admin-card-meta">@Model.Count() products</span>
+        </div>
+    </div>
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Jersey</th>
+                    <th>Type</th>
+                    <th>Club / nation</th>
+                    <th>League</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var j in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="admin-item">
+                                    <img src="@Url.Content($"~/img/jerseys/{j.img}")"
+                                         class="admin-thumb" alt="@j.Name" />
+                                    <div class="admin-item-copy">
+                                        <strong>@j.Name</strong>
+                                        <span>Jersey #@j.JerseysId</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="admin-pill @(j.IsInter ? "purple" : "blue")">
+                                    @(j.IsInter ? "International" : "Club")
+                                </span>
+                            </td>
+                            <td class="admin-secondary">
+                                @(j.IsInter ? j.Nation?.Name : j.Club?.Name)
+                            </td>
+                            <td class="admin-secondary">
+                                @(j.IsInter ? j.InterLeague?.interLeaguesName : j.League?.LeagueName)
+                            </td>
+                            <td><span class="admin-pill">@j.Category</span></td>
+                            <td class="admin-primary">$@j.Price</td>
+                            <td>
+                                <div class="admin-actions">
+                                    <a asp-controller="Jerseys" asp-action="Edit"
+                                       asp-route-id="@j.JerseysId"
+                                       class="admin-action" title="Edit">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                    <a asp-controller="Jerseys" asp-action="Delete"
+                                       asp-route-id="@j.JerseysId"
+                                       class="admin-action danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7">
+                            <div class="admin-empty">
+                                <i class="fas fa-shirt"></i>
+                                <strong>No jerseys found</strong>
+                                <span>Try another search or add a new jersey.</span>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
